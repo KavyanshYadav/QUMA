@@ -5,6 +5,7 @@ import {
   CONFLICT,
   INTERNAL_SERVER_ERROR,
   NOT_FOUND,
+  REQUEST_CONTEXT_NOT_INITIALIZED,
 } from '.';
 import { ExceptionBase } from './execptions.base';
 
@@ -79,4 +80,17 @@ export class InternalServerErrorException extends ExceptionBase {
   }
 
   readonly code = INTERNAL_SERVER_ERROR;
+}
+
+export class RequestContextErrorException extends ExceptionBase {
+  static readonly message = 'Request context error';
+  readonly code: string;
+  constructor(
+    message = RequestContextErrorException.message,
+    ErrorCode = REQUEST_CONTEXT_NOT_INITIALIZED
+  ) {
+    super(message);
+
+    this.code = ErrorCode;
+  }
 }
