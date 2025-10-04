@@ -12,18 +12,27 @@ export class Logger {
     if (!Logger.adapters) Logger.adapters = [];
     Logger.adapters.push(adapter);
   }
-  static log(level: LogLevel, message: string, meta: Record<string, any> = {}) {
+
+  private static enrichMeta(
+    meta: Record<string, any> = {}
+  ): Record<string, any> {
     try {
-      const ctx = RequestContext.getContext();
+      const requestId = RequestContext.getRequestId();
+      return { ...meta, requestId };
     } catch {
       throw new RequestContextErrorException(
         'RequestContext Not Initialized',
         REQUEST_CONTEXT_NOT_INITIALIZED
       );
+      return meta;
     }
+  }
+
+  static log(level: LogLevel, message: string, meta: Record<string, any> = {}) {
+    const withContextMeta = this.enrichMeta(meta);
     if (this.enabled) {
       this.adapters.forEach((adapter) => {
-        adapter.log(level, message, meta);
+        adapter.log(level, message, withContextMeta);
       });
     }
   }
