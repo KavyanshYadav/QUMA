@@ -3,7 +3,8 @@ import express from 'express';
 import { RequestContext } from './libs/application/context/AppRequestContex';
 import { WinstonAdapter } from './libs/utils/adapters/logs/winston_logger';
 import { Logger } from './libs/log/logger';
-
+import 'reflect-metadata';
+import { UserModule } from './modules/user/user.module';
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
@@ -28,7 +29,7 @@ app.get('/', (req, res) => {
   });
   res.send({ message: 'Hello API' });
 });
-
+app.use(new UserModule().router);
 app.listen(port, host, () => {
   console.log(`[ ready ] http://${host}:${port}`);
 });

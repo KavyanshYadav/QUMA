@@ -8,6 +8,12 @@
     },
     {
       "path": "./packages/core"
+    },
+    {
+      "path": "./libs"
+    },
+    {
+      "path": "./packages/quma_types"
     }
   ]
 }
