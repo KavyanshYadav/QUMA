@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "./../../tsconfig.base.json",
   "files": [],
   "include": [],
   "compilerOptions": {
@@ -7,6 +7,9 @@
     "emitDecoratorMetadata": true
   },
   "references": [
+    {
+      "path": "../quma_types"
+    },
     {
       "path": "./tsconfig.app.json"
     },

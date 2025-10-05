@@ -104,6 +104,8 @@
   },
   "dependencies": {
     "express": "^4.21.2",
+    "reflect-metadata": "^0.2.2",
+    "tsyringe": "^4.10.0",
     "winston": "^3.18.3"
   }
 }

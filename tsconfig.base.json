@@ -14,8 +14,17 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["@quma/source"]
+    "customConditions": ["@quma/source"],
+    "baseUrl": ".",
+    "paths": {
+      "@backend/*": ["packages/backend/src/*"],
+      "@core/*": ["packages/core/src/*"],
+      "@quma_types": ["packages/quma_types/src/index.ts"],
+      "@quma_types/*": ["packages/quma_types/src/*"]
+    }
   }
 }

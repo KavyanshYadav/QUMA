@@ -9,5 +9,5 @@ export abstract class CommandBusBase {
     commandType: new (...args: any[]) => T,
     handler: CommandHandler<T, R>
   ): void;
-  abstract execute(command: any): Promise<any>;
+  abstract  execute(command: any): Promise<any>;
 }

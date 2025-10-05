@@ -2,4 +2,5 @@ export function qumaTypes(): string {
   return 'quma_types';
 }
 
-export * from './api/user/user.js';
+export * from './types/api/user/user';
+export * from './zodSchema/api/user/user';

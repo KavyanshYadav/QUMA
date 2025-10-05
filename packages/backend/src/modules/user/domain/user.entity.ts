@@ -1,6 +1,6 @@
-import { randomBytes, randomUUID } from 'crypto';
+import {  randomUUID } from 'crypto';
 import { AggregateRoot } from '../../../libs/ddd/aggregate.root';
-import { AggregateID, Entity } from '../../../libs/ddd/entity.base';
+import { AggregateID } from '../../../libs/ddd/entity.base';
 import { CreateUserProps, UserProps, UserRoles } from './user.types';
 import { UserCreatedDomainEvent } from './events/user-created-event';
 

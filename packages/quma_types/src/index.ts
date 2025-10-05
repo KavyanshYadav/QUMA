@@ -1,1 +1,1 @@
-export * from './lib/quma-types.js';
+export * from './lib/quma-types';

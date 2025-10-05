@@ -1,11 +1,8 @@
-import {
-  CommandBusBase,
-  CommandHandler,
-} from '../../../../libs/ddd/command.bus.base';
+import { CommandHandler } from '../../../../libs/ddd/command.bus.base';
 import { UserEntity } from '../../domain/user.entity';
 import { CreateUserCommand } from './create-user.command';
 
-export class UserService
+export class CreateUserService
   implements CommandHandler<CreateUserCommand, UserEntity>
 {
   async execute(command: CreateUserCommand): Promise<UserEntity> {
