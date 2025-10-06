@@ -2,12 +2,15 @@ import styled from '@emotion/styled';
 import NxWelcome from './nx-welcome';
 
 import { Route, Routes, Link } from 'react-router-dom';
-
+import { MemoryBus } from '@quma/quma_ddd_base';
 const StyledApp = styled.div`
   // Your style here
 `;
 
 export function App() {
+  const Me = new MemoryBus();
+  console.log(Me);
+
   return (
     <StyledApp>
       <NxWelcome title="@quma/quma_oauth_frontend_web" />
