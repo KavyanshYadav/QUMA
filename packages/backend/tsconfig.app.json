@@ -19,6 +19,9 @@
   ],
   "references": [
     {
+      "path": "../quma_ddd_base/tsconfig.lib.json"
+    },
+    {
       "path": "../quma_types/tsconfig.lib.json"
     }
   ]

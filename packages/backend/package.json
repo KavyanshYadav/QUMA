@@ -9,6 +9,9 @@
         "outputs": [
           "{options.outputPath}"
         ],
+        "dependsOn": [
+          "^build"
+        ],
         "defaultConfiguration": "production",
         "options": {
           "platform": "node",
@@ -16,7 +19,7 @@
           "format": [
             "cjs"
           ],
-          "bundle": false,
+          "bundle": true,
           "main": "packages/backend/src/main.ts",
           "tsConfig": "packages/backend/tsconfig.app.json",
           "assets": [

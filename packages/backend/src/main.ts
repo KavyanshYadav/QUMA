@@ -1,11 +1,11 @@
 import 'reflect-metadata';
 import { randomUUID } from 'crypto';
 import express from 'express';
-import { RequestContext } from './libs/application/context/AppRequestContex';
-import { WinstonAdapter } from './libs/utils/adapters/logs/winston_logger';
-import { Logger } from './libs/log/logger';
+import { RequestContext } from '@quma/quma_ddd_base';
+import { WinstonAdapter } from '@quma/quma_ddd_base';
+import { Logger } from '@quma/quma_ddd_base';
 import { UserModule } from './modules/user/user.module';
-import { MemoryBus } from './libs/utils/commandbus/MemoryBus';
+import { MemoryBus } from '@quma/quma_ddd_base';
 import { container } from 'tsyringe';
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;

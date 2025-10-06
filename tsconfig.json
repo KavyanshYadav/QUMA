@@ -11,6 +11,9 @@
     },
     {
       "path": "./packages/quma_types"
+    },
+    {
+      "path": "./packages/quma_ddd_base"
     }
   ]
 }

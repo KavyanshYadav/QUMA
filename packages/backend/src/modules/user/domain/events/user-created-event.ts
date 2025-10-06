@@ -1,7 +1,4 @@
-import {
-  DomainEvent,
-  DomainEventProps,
-} from '../../../../libs/ddd/domain-event.base';
+import { DomainEvent, DomainEventProps } from '@quma/quma_ddd_base';
 
 export class UserCreatedDomainEvent extends DomainEvent {
   readonly email: string;

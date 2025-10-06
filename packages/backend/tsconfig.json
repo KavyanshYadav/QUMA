@@ -8,6 +8,9 @@
   },
   "references": [
     {
+      "path": "../quma_ddd_base"
+    },
+    {
       "path": "../quma_types"
     },
     {

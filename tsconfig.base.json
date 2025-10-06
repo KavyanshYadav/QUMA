@@ -18,13 +18,10 @@
     "emitDecoratorMetadata": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["@quma/source"],
     "baseUrl": ".",
     "paths": {
-      "@backend/*": ["packages/backend/src/*"],
-      "@core/*": ["packages/core/src/*"],
-      "@quma_types": ["packages/quma_types/src/index.ts"],
-      "@quma_types/*": ["packages/quma_types/src/*"]
+      "@quma/quma_types": ["packages/quma_types/dist"],
+      "@quma/quma_ddd_base": ["packages/quma_ddd_base/dist"]
     }
   }
 }

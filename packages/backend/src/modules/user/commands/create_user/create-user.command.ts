@@ -1,4 +1,4 @@
-import { Command, CommandProps } from '../../../../libs/ddd/command.base';
+import { Command, CommandProps } from '@quma/quma_ddd_base';
 
 export class CreateUserCommand extends Command {
   readonly email: string;

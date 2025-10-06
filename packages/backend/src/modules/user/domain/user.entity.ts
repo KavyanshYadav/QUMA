@@ -1,12 +1,12 @@
-import {  randomUUID } from 'crypto';
-import { AggregateRoot } from '../../../libs/ddd/aggregate.root';
-import { AggregateID } from '../../../libs/ddd/entity.base';
+import { randomUUID } from 'crypto';
+import { AggregateRoot } from '@quma/quma_ddd_base';
+import { AggregateID } from '@quma/quma_ddd_base';
 import { CreateUserProps, UserProps, UserRoles } from './user.types';
 import { UserCreatedDomainEvent } from './events/user-created-event';
 
 export class UserEntity extends AggregateRoot<UserProps> {
   public override validate(): void {
-    throw new Error('Method not implemented.');
+    // throw new Error('Method not implemented.');
   }
   protected readonly _id!: AggregateID;
 
