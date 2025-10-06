@@ -1,0 +1,10 @@
+{
+  "name": "@quma/quma_oauth_frontend_web-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "implicitDependencies": [
+      "@quma/quma_oauth_frontend_web"
+    ]
+  }
+}

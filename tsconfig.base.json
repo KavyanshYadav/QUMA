@@ -20,8 +20,8 @@
     "target": "es2022",
     "baseUrl": ".",
     "paths": {
-      "@quma/quma_types": ["packages/quma_types/dist"],
-      "@quma/quma_ddd_base": ["packages/quma_ddd_base/dist"]
+      "@quma/quma_ddd_base": ["packages/quma_ddd_base/dist"],
+      "@quma/quma_types": ["packages/quma_types/dist"]
     }
   }
 }
