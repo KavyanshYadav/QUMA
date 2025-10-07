@@ -1,5 +1,15 @@
 {
   "name": "@quma/quma_oauth_frontend_web",
   "version": "0.0.1",
-  "private": true
+  "private": true,
+  "targets": {
+    "server": {
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "dependencies"
+        }
+      ]
+    }
+  }
 }

@@ -21,7 +21,8 @@
     "baseUrl": ".",
     "paths": {
       "@quma/quma_ddd_base": ["packages/quma_ddd_base/dist"],
-      "@quma/quma_types": ["packages/quma_types/dist"]
+      "@quma/quma_types": ["packages/quma_types/dist"],
+      "@quma/webkit": ["packages/frontend_web_kit/src/index.ts"]
     }
   }
 }

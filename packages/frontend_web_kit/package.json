@@ -1,8 +1,8 @@
 {
-  "name": "@quma/ddd",
+  "name": "@quma/webkit",
   "version": "0.0.1",
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./src/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -16,12 +16,5 @@
   "files": [
     "dist",
     "!**/*.tsbuildinfo"
-  ],
-  "dependencies": {
-    "tslib": "^2.3.0",
-    "winston": "^3.18.3"
-  },
-  "devDependencies": {
-    "vite-tsconfig-paths": "^5.1.4"
-  }
+  ]
 }

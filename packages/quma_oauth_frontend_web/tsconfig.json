@@ -3,10 +3,16 @@
   "include": [],
   "references": [
     {
+      "path": "../quma_types"
+    },
+    {
       "path": "./tsconfig.app.json"
     },
     {
       "path": "./tsconfig.spec.json"
+    },
+    {
+      "path": "../frontend_web_kit"
     }
   ],
   "extends": "../../tsconfig.base.json"

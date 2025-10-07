@@ -20,6 +20,9 @@
     },
     {
       "path": "./packages/quma_oauth_frontend_web"
+    },
+    {
+      "path": "./packages/frontend_web_kit"
     }
   ]
 }
