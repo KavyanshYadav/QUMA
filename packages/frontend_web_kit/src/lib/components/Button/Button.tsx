@@ -1,42 +1,140 @@
 import { css } from '@emotion/react';
+import { defaultTheme, useTheme } from '../ThemeProvider';
+import { forwardRef } from 'react';
+import { SkeletonLoader } from '../Loader/Loader';
 
-export const niceButtonStyle = css`
-  padding: 0.5rem 1.5rem;
-  background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
-  color: #fff;
-  border: none;
-  border-radius: 0.375rem;
-  font-size: 1rem;
-  font-weight: 600;
+export type btnType = 'primary' | 'secondary' | 'accent';
 
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
-  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  loading?: boolean;
 
-  &:hover {
-    background: linear-gradient(90deg, #1e40af 0%, #2563eb 100%);
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
-    transform: translateY(-2px) scale(1.03);
+  children: React.ReactNode;
+
+  width?: string | number;
+
+  height?: string | number;
+
+  btnType?: btnType;
+}
+
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      loading = false,
+      children,
+      width = '100%',
+      height,
+      btnType = 'primary',
+      ...rest
+    },
+    ref
+  ): React.ReactElement => {
+    const providedTheme = useTheme();
+    const theme = providedTheme?.theme || defaultTheme;
+
+    const buttonVariants = {
+      primary: {
+        background: theme.colors.primary,
+        color: theme.colors.surface,
+        borderColor: theme.colors.primary,
+        hoverBackground: theme.colors.primary,
+        activeBackground: theme.colors.accent,
+      },
+      secondary: {
+        background: 'transparent',
+        color: theme.colors.primary,
+        borderColor: theme.colors.primary,
+        hoverBackground: theme.colors.primary,
+        activeBackground: theme.colors.secondary,
+      },
+      accent: {
+        background: theme.colors.accent,
+        color: theme.colors.surface,
+        borderColor: theme.colors.accent,
+        hoverBackground: theme.colors.secondary,
+        activeBackground: theme.colors.primary,
+      },
+    };
+
+    const currentVariant = buttonVariants[btnType];
+
+    const containerStyle = css`
+      position: relative; /* Essential for positioning the skeleton */
+      display: inline-block; /* Allows the container to size to its content */
+      width: ${width};
+      height: ${height};
+      /* Prevents the skeleton from looking weird if height isn't set */
+      min-height: ${height || theme.layout.spacing(7)};
+    `;
+
+    // Style for the skeleton loader to make it fill the container
+    const skeletonStyle = css`
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: ${theme.layout.borderRadius.md};
+    `;
+
+    const buttonStyle = css`
+      width: 100%;
+      height: 100%;
+      padding: ${theme.layout.spacing(2)} ${theme.layout.spacing(4)};
+      font-size: ${theme.typography.fontSize.base};
+      font-weight: ${theme.typography.fontWeight.bold};
+      font-family: ${theme.typography.fontFamily};
+      border-radius: ${theme.layout.borderRadius.md};
+      cursor: pointer;
+      box-shadow: ${theme.effects.shadows.md};
+      transition: all ${theme.effects.transitions.normal};
+
+      /* Apply dynamic styles from the variants object */
+      background: ${currentVariant.background};
+      color: ${currentVariant.color};
+      border: solid 1px ${currentVariant.borderColor};
+
+      &:hover {
+        background: ${currentVariant.hoverBackground};
+        color: ${btnType === 'secondary'
+          ? theme.colors.surface
+          : currentVariant.color};
+        box-shadow: ${theme.effects.shadows.lg};
+      }
+
+      &:active {
+        background: ${currentVariant.activeBackground};
+        box-shadow: ${theme.effects.shadows.sm};
+        transform: scale(0.98);
+      }
+
+      &:focus-visible {
+        outline: 2px solid ${currentVariant.borderColor};
+        outline-offset: 2px;
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background: ${theme.colors.muted};
+        border-color: ${theme.colors.muted};
+      }
+    `;
+
+    return (
+      <div css={containerStyle}>
+        {loading ? (
+          <SkeletonLoader css={skeletonStyle} />
+        ) : (
+          <button ref={ref} css={buttonStyle} {...rest}>
+            {children}
+          </button>
+        )}
+      </div>
+    );
   }
+);
 
-  &:active {
-    background: #1e3a8a;
-    box-shadow: 0 1px 4px rgba(37, 99, 235, 0.1);
-    transform: translateY(0) scale(0.98);
-  }
-
-  &:focus {
-    outline: 2px solid #2563eb;
-    outline-offset: 2px;
-  }
-`;
-export const Button = () => {
-  const style = css`
-    background-color: blue;
-  `;
-  return (
-    <div>
-      <div css={niceButtonStyle}>Button</div>
-    </div>
-  );
-};
+// It's good practice to set a display name for components wrapped in forwardRef
+Button.displayName = 'Button';

@@ -1,11 +1,31 @@
 // import NxWelcome from './nx-welcome';
 import { UserResponseDto } from '@quma/quma_types';
 import { Route, Routes, Link } from 'react-router-dom';
-import { Button } from '@quma/webkit';
+import { Button, ThemeProvider, useTheme, Input } from '@quma/webkit';
 import { css } from '@emotion/react';
+import { SkeletonLoader } from 'packages/frontend_web_kit/src/lib/components/Loader/Loader';
 const StyledApp = css`
   // Your style here
 `;
+
+const Name = () => {
+  const theme = useTheme();
+
+  return (
+    <div>
+      <Button loading={true} onClick={() => theme?.toggleTheme()}>
+        Name
+      </Button>
+      <h1
+        css={css`
+          color: ${theme?.theme.colors.text};
+        `}
+      >
+        Name
+      </h1>
+    </div>
+  );
+};
 
 export function App() {
   const user = new UserResponseDto(
@@ -19,10 +39,28 @@ export function App() {
 
   console.log(user);
   return (
-    <div>
-      <Button>Click me</Button>
-      Name
-    </div>
+    <ThemeProvider>
+      <div>
+        <div
+          css={css`
+            width: 20rem;
+            height: 30rem;
+            position: relative;
+          `}
+        >
+          <SkeletonLoader />
+        </div>
+        <Button
+          css={css`
+            margin: 10rem;
+          `}
+        >
+          Click me
+        </Button>
+        <Input label="Name"></Input>
+        <Name />
+      </div>
+    </ThemeProvider>
   );
 }
 
