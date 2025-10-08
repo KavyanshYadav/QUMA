@@ -2,8 +2,11 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tsconf from 'vite-tsconfig-paths';
+import { AUTH_WEB_BASE_URL } from '@quma/config';
+
 export default defineConfig(() => ({
   root: __dirname,
+  base: AUTH_WEB_BASE_URL,
   cacheDir: '../../node_modules/.vite/packages/quma_oauth_frontend_web',
   server: {
     port: 4200,

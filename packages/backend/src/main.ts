@@ -7,10 +7,18 @@ import { Logger } from '@quma/quma_ddd_base';
 import { UserModule } from './modules/user/user.module';
 import { MemoryBus } from '@quma/quma_ddd_base';
 import { container } from 'tsyringe';
+import path from 'path';
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 const app = express();
+const AuthpublicPath = path.join(__dirname, 'public/authWeb');
+
+app.use('/web/auth', express.static(AuthpublicPath));
+
+app.get('/web/auth/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 app.use((req, res, next) => {
   const requestId = randomUUID();

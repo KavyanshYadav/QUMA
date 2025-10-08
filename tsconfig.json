@@ -23,6 +23,9 @@
     },
     {
       "path": "./packages/frontend_web_kit"
+    },
+    {
+      "path": "./packages/quma_config"
     }
   ]
 }

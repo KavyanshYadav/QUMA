@@ -5,6 +5,27 @@
   "nx": {
     "targets": {
       "build": {
+        "executor": "nx:run-commands",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "outputPath": "dist/apps/@quma/backend",
+        "cache": false,
+        "options": {
+          "commands": [
+            "nx build @quma/quma_oauth_frontend_web",
+            "nx run @quma/backend:build:esbuild",
+            "rimraf packages/backend/dist/apps/backend/public",
+            "copyfiles --up 3 \"packages/quma_oauth_frontend_web/dist/**/*\" \"packages/backend/dist/public/authWeb\""
+          ]
+        },
+        "parallel": false,
+        "inputs": [
+          "production",
+          "^production"
+        ]
+      },
+      "build:esbuild": {
         "executor": "@nx/esbuild:esbuild",
         "outputs": [
           "{options.outputPath}"
@@ -16,6 +37,7 @@
         "options": {
           "platform": "node",
           "outputPath": "packages/backend/dist",
+          "deleteOutputPath": false,
           "format": [
             "cjs"
           ],
@@ -60,7 +82,7 @@
       },
       "copy-workspace-modules": {
         "dependsOn": [
-          "build"
+          "^qbuild:esbuild"
         ],
         "cache": true,
         "outputs": [
@@ -91,10 +113,10 @@
         },
         "configurations": {
           "development": {
-            "buildTarget": "@quma/backend:build:development"
+            "buildTarget": "@quma/backend:build:esbuild:development"
           },
           "production": {
-            "buildTarget": "@quma/backend:build:production"
+            "buildTarget": "@quma/backend:build:esbuild:production"
           }
         }
       },
