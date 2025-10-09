@@ -11,10 +11,13 @@ import { UserModule } from './modules/user/user.module';
 import { MemoryBus } from '@quma/quma_ddd_base';
 import { container } from 'tsyringe';
 import path from 'path';
+import { initDB } from './db';
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 dotEnv.config();
+
+initDB();
 
 const app = express();
 const AuthpublicPath = path.join(__dirname, 'public/authWeb');
