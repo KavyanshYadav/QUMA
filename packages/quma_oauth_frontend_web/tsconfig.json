@@ -3,6 +3,9 @@
   "include": [],
   "references": [
     {
+      "path": "../quma_config"
+    },
+    {
       "path": "../frontend_web_kit"
     },
     {

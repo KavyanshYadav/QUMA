@@ -1,42 +1,7 @@
-import { css } from '@emotion/react';
-import { useTheme } from '../ThemeProvider';
+import { css, SerializedStyles } from '@emotion/react';
+import { defaultTheme, useTheme } from '../ThemeProvider';
 import { Theme } from '../../types/Theme/theme'; // Assuming this is the path to your types
 import { forwardRef, InputHTMLAttributes } from 'react';
-
-// A default theme to use as a fallback if the component is not inside a ThemeProvider
-// (This would typically be shared across components)
-const defaultTheme: Omit<Theme, 'mode'> = {
-  colors: {
-    primary: '#2563eb',
-    secondary: '#1e40af',
-    accent: '#1e3a8a',
-    background: '#ffffff',
-    surface: '#ffffff',
-    text: '#111827',
-    muted: '#6b7280',
-    success: '#10b981',
-    warning: '#f59e0b',
-    danger: '#ef4444',
-  },
-  typography: {
-    fontFamily: 'sans-serif',
-    fontSize: {
-      base: '1rem',
-      xs: '0.75rem',
-      sm: '0.875rem' /*...other sizes*/,
-    },
-    //... other typography settings
-  },
-  layout: {
-    borderRadius: { md: '0.375rem' /*...other sizes*/ },
-    spacing: (factor: number) => `${factor * 0.5}rem`,
-  },
-  effects: {
-    transitions: { normal: '0.2s' },
-    //... other effects
-  },
-  //... other theme properties
-};
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   /**
@@ -47,10 +12,11 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
    * A unique identifier for the input, necessary for accessibility.
    */
   id: string;
+  sx: SerializedStyles;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, id, ...rest }, ref): React.ReactElement => {
+  ({ label, id, sx, ...rest }, ref): React.ReactElement => {
     const providedTheme = useTheme();
     const theme = providedTheme?.theme || defaultTheme;
 
@@ -116,7 +82,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     `;
 
     return (
-      <div css={containerStyle}>
+      <div css={[containerStyle, sx]}>
         <input
           ref={ref}
           className="input-field"

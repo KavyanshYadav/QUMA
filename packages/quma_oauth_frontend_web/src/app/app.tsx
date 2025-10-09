@@ -1,9 +1,13 @@
 // import NxWelcome from './nx-welcome';
+import './index.css';
 import { UserResponseDto } from '@quma/quma_types';
 import { Route, Routes, Link } from 'react-router-dom';
 import { Button, ThemeProvider, useTheme, Input } from '@quma/webkit';
 import { css } from '@emotion/react';
 import { SkeletonLoader } from 'packages/frontend_web_kit/src/lib/components/Loader/Loader';
+import { AUTH_WEB_BASE_URL } from '@quma/config';
+import LoginWidget from './widgets/LoginWidget';
+import LoginScreen from './pages/loginScreen';
 const StyledApp = css`
   // Your style here
 `;
@@ -40,26 +44,7 @@ export function App() {
   console.log(user);
   return (
     <ThemeProvider>
-      <div>
-        <div
-          css={css`
-            width: 20rem;
-            height: 30rem;
-            position: relative;
-          `}
-        >
-          <SkeletonLoader />
-        </div>
-        <Button
-          css={css`
-            margin: 10rem;
-          `}
-        >
-          Click me
-        </Button>
-        <Input label="Name"></Input>
-        <Name />
-      </div>
+      <LoginScreen />
     </ThemeProvider>
   );
 }

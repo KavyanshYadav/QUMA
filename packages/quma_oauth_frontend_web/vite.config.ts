@@ -1,22 +1,22 @@
-/// <reference types='vitest' />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tsconf from 'vite-tsconfig-paths';
-import { AUTH_WEB_BASE_URL } from '@quma/config';
+// import { AUTH_WEB_BASE_URL } from '../quma_config/src/index';
 
 export default defineConfig(() => ({
   root: __dirname,
-  base: AUTH_WEB_BASE_URL,
   cacheDir: '../../node_modules/.vite/packages/quma_oauth_frontend_web',
+  base: '/web/auth',
   server: {
     port: 4200,
     host: 'localhost',
   },
+
   preview: {
     port: 4200,
     host: 'localhost',
   },
-  plugins: [react(), tsconf()],
+  plugins: [react(), tsconf({ root: '../../' })],
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [ nxViteTsPaths() ],

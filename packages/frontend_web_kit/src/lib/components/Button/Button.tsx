@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import { css, SerializedStyles } from '@emotion/react';
 import { defaultTheme, useTheme } from '../ThemeProvider';
 import { forwardRef } from 'react';
 import { SkeletonLoader } from '../Loader/Loader';
@@ -9,6 +9,7 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean;
 
+  label?: string;
   children: React.ReactNode;
 
   width?: string | number;
@@ -16,6 +17,11 @@ export interface ButtonProps
   height?: string | number;
 
   btnType?: btnType;
+
+  // icon?: React.ReactNode;
+  iconLeft?: React.ReactNode;
+  iconRight?: React.ReactNode;
+  sx?: SerializedStyles;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -26,6 +32,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       width = '100%',
       height,
       btnType = 'primary',
+      iconLeft,
+      label,
+      iconRight,
+      sx,
       ...rest
     },
     ref
@@ -87,6 +97,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       font-family: ${theme.typography.fontFamily};
       border-radius: ${theme.layout.borderRadius.md};
       cursor: pointer;
+      position: relative;
       box-shadow: ${theme.effects.shadows.md};
       transition: all ${theme.effects.transitions.normal};
 
@@ -94,14 +105,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       background: ${currentVariant.background};
       color: ${currentVariant.color};
       border: solid 1px ${currentVariant.borderColor};
-
-      &:hover {
-        background: ${currentVariant.hoverBackground};
-        color: ${btnType === 'secondary'
-          ? theme.colors.surface
-          : currentVariant.color};
-        box-shadow: ${theme.effects.shadows.lg};
-      }
 
       &:active {
         background: ${currentVariant.activeBackground};
@@ -127,8 +130,35 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {loading ? (
           <SkeletonLoader css={skeletonStyle} />
         ) : (
-          <button ref={ref} css={buttonStyle} {...rest}>
-            {children}
+          <button ref={ref} css={[buttonStyle, sx]} {...rest}>
+            <div
+              css={css`
+                width: 100%;
+                height: fit-content;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              `}
+            >
+              <div
+                css={css`
+                  margin: auto;
+                `}
+              >
+                {label}
+              </div>
+              {iconLeft && (
+                <div
+                  css={css`
+                    margin-left: auto;
+                    display: flex;
+                    justify-content: center;
+                  `}
+                >
+                  {iconLeft}
+                </div>
+              )}
+            </div>
           </button>
         )}
       </div>

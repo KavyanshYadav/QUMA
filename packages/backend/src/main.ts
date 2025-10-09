@@ -1,4 +1,7 @@
 import 'reflect-metadata';
+
+import dotEnv from 'dotenv';
+
 import { randomUUID } from 'crypto';
 import express from 'express';
 import { RequestContext } from '@quma/quma_ddd_base';
@@ -10,6 +13,8 @@ import { container } from 'tsyringe';
 import path from 'path';
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
+
+dotEnv.config();
 
 const app = express();
 const AuthpublicPath = path.join(__dirname, 'public/authWeb');

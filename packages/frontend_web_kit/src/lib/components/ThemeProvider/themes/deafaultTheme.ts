@@ -12,7 +12,7 @@ export const defaultTheme: Theme = {
     success: '#22C55E',
     danger: '#EF4444',
     accent: '#3B82F6',
-    muted: '#E5E7EB',
+    muted: '#bebfc0ff',
     warning: '#F59E0B',
   },
 
