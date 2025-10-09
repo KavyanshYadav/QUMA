@@ -11,8 +11,6 @@ const pool = new PostGresDatabase({
 });
 
 export async function initDB() {
-  await db.execute('CREATE TABLE IF NOT EXISTS users (...)');
-
   await pool.connect();
   console.log('DATABSE:', pool.isConnected());
   db.insert(users).values({
