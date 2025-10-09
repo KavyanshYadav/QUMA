@@ -4,6 +4,7 @@ import { CreateUserService } from './commands/create_user/create-user.service';
 import { CrateUserHttpController } from './commands/create_user/create-user.http.controller';
 import { MemoryBus } from '@quma/quma_ddd_base';
 import { CreateUserCommand } from './commands/create_user/create-user.command';
+import { UserPostGresRepo } from './database/user.postgres.repository';
 export class UserModule {
   public readonly router: Router;
 
@@ -11,6 +12,7 @@ export class UserModule {
     this.router = Router();
 
     this.router.get('/user');
+    container.register(UserPostGresRepo, { useClass: UserPostGresRepo });
     container.register(CreateUserService, { useClass: CreateUserService });
     container.register(CrateUserHttpController, {
       useClass: CrateUserHttpController,
