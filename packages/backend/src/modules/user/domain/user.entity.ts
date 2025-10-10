@@ -11,7 +11,7 @@ export class UserEntity extends AggregateRoot<UserProps> {
   protected readonly _id!: AggregateID;
 
   static create(prop: CreateUserProps): UserEntity {
-    const id = randomUUID();
+    const id = prop.id || randomUUID();
     const props: UserProps = { ...prop, role: UserRoles.guest };
     const user = new UserEntity({ id, props });
 

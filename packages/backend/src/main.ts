@@ -11,7 +11,8 @@ import { UserModule } from './modules/user/user.module';
 import { MemoryBus } from '@quma/quma_ddd_base';
 import { container } from 'tsyringe';
 import path from 'path';
-import { initDB } from './db';
+import { db, initDB } from './db';
+import { AuthMoudle } from './modules/auth/auth.module';
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
@@ -43,6 +44,12 @@ Logger.registerAdapter(new WinstonAdapter());
 const memoryBus = new MemoryBus();
 container.registerInstance(MemoryBus, memoryBus);
 
+container.register('DrizzleDBinstance', {
+  useValue: db,
+});
+
+//Logger.disable();
+
 app.get('/', (req, res) => {
   Logger.info('Name', {
     id: 124,
@@ -50,6 +57,7 @@ app.get('/', (req, res) => {
   res.send({ message: 'Hello API' });
 });
 app.use(new UserModule().router);
+app.use(new AuthMoudle().router);
 app.listen(port, host, () => {
   console.log(`[ ready ] http://${host}:${port}`);
 });

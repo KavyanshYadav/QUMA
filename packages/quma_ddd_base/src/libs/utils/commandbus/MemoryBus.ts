@@ -16,7 +16,7 @@ export class MemoryBus extends CommandBusBase {
 
   async execute(command: any): Promise<any> {
     const handler = this.handlers.get(command.constructor);
-    console.log('📜executing command', command);
+
     if (!handler) {
       throw new Error(
         'Handler not found of commandName:' + command.constructor.name

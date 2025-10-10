@@ -1,5 +1,5 @@
 import { PostGresDatabase } from '@quma/quma_ddd_base';
-import { drizzle } from 'drizzle-orm/node-postgres';
+import { drizzle, NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { users } from '../modules/user/database/schema';
 
 const pool = new PostGresDatabase({
@@ -19,4 +19,5 @@ export async function initDB() {
   });
 }
 
+export type DrizzleDB = NodePgDatabase;
 export const db = drizzle(pool.getPool());

@@ -1,9 +1,12 @@
+import { UserEntity } from '../domain/user.entity';
+
 export abstract class UserRepositoryPort {
-  abstract isEmailTaken(email: string): Promise<boolean>;
+  abstract isEmailTaken(email: string): Promise<undefined | UserEntity>;
   abstract createUser(user: {
     email: string;
     country: string;
     postalCode: string;
     street: string;
-  }): Promise<void>;
+  }): Promise<UserEntity>;
+  abstract findUserByEmail(email: string): Promise<UserEntity | undefined>;
 }
