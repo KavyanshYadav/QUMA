@@ -8,6 +8,7 @@ import { SkeletonLoader } from 'packages/frontend_web_kit/src/lib/components/Loa
 import { AUTH_WEB_BASE_URL } from '@quma/config';
 import LoginWidget from './widgets/LoginWidget';
 import LoginScreen from './pages/loginScreen';
+import { MemoryBus } from '@quma/quma_ddd_base';
 const StyledApp = css`
   // Your style here
 `;
@@ -42,6 +43,9 @@ export function App() {
   );
 
   console.log(user);
+  const Me = new MemoryBus();
+  console.log(Me);
+
   return (
     <ThemeProvider>
       <LoginScreen />

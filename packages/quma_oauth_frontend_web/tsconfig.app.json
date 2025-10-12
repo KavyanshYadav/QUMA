@@ -38,6 +38,11 @@
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
   "references": [
     {
+      "path": "../quma_ddd_base/tsconfig.lib.json"
+    }
+  ],
+  "references": [
+    {
       "path": "../quma_config/tsconfig.lib.json"
     },
     {
