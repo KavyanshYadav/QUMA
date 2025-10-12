@@ -4,6 +4,15 @@ meta {
   seq: 1
 }
 
-get {
-  url: 
+post {
+  url: http:localhost:3000/auth/email
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "nae@kl.com",
+    "profile": "asdsdas"
+  }
 }

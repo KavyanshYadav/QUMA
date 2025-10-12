@@ -22,7 +22,7 @@ initDB();
 
 const app = express();
 const AuthpublicPath = path.join(__dirname, 'public/authWeb');
-
+app.use(express.json());
 app.use('/web/auth', express.static(AuthpublicPath));
 
 app.get('/web/auth/*', (req, res) => {

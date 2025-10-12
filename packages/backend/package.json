@@ -121,8 +121,13 @@
         }
       },
       "test": {
+        "executor": "@nx/vite:test",
+        "outputs": [
+          "{options.reportsDirectory}"
+        ],
         "options": {
-          "passWithNoTests": true
+          "passWithNoTests": true,
+          "reportsDirectory": "./test-output/vitest/coverage"
         }
       }
     }

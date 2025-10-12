@@ -3,6 +3,17 @@
   "configurations": [
     {
       "type": "node",
+      "request": "attach",
+      "name": "Attach to Node Backend (WS)",
+      "port": 9229,
+      "address": "localhost",
+      "restart": true,
+      "skipFiles": ["<node_internals>/**"],
+      "sourceMaps": true,
+      "outFiles": ["${workspaceFolder}/packages/backend/dist/**/*.js"]
+    },
+    {
+      "type": "node",
       "request": "launch",
       "name": "Debug backend with Nx",
       "runtimeExecutable": "pnpm exec",
@@ -41,8 +52,8 @@
       "type": "node",
       "request": "launch",
       "name": "Debug @quma/backend with Nx",
-      "runtimeExecutable": "pnpm exec",
-      "runtimeArgs": ["nx", "serve", "@quma/backend"],
+      "runtimeExecutable": "/usr/bin/node",
+      "runtimeArgs": ["./node_modules/.bin/nx", "serve", "@quma/backend"],
       "env": {
         "NODE_OPTIONS": "--inspect=9231"
       },

@@ -15,9 +15,9 @@ export class CreateUserService
 
     await this.userpgRepo.createUser({
       email: user.getProps().email,
-      country: user.getProps().id,
-      postalCode: user.getProps().id,
-      street: user.getProps().id,
+      country: user.id,
+      postalCode: user.id,
+      street: user.id,
     });
 
     Logger.info('User created with email:');

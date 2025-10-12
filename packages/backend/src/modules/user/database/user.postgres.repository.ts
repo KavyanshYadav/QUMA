@@ -36,19 +36,18 @@ export class UserPostGresRepo extends UserRepositoryPort {
     postalCode: string;
     street: string;
   }): Promise<UserEntity> {
-    await db
+    const [usr] = await db
       .insert(users)
       .values({
         email: user.email,
         display_name: 'Nma',
       })
+      .returning({ id: users.id })
       .execute();
-
-    const userd = await this.findUserByEmail(user.email);
 
     return UserEntity.create({
       email: user.email,
-      id: userd?.id,
+      id: usr.id,
     });
   }
 }
