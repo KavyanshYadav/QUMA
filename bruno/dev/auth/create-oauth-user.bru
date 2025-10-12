@@ -1,0 +1,95 @@
+meta {
+  name: Create OAuth User (Manual)
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/auth/oauth
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "provider": "{{provider}}",
+    "providerId": "{{providerId}}",
+    "email": "{{email}}",
+    "profile": {
+      "id": "{{providerId}}",
+      "name": "{{name}}",
+      "email": "{{email}}",
+      "picture": "{{picture}}"
+    },
+    "accessToken": "{{accessToken}}",
+    "refreshToken": "{{refreshToken}}",
+    "expiresAt": "{{expiresAt}}"
+  }
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:3000
+  provider: "google"
+  providerId: "google_123456789"
+  email: "user@example.com"
+  name: "John Doe"
+  picture: "https://example.com/avatar.jpg"
+  accessToken: "google_access_token_here"
+  refreshToken: "google_refresh_token_here"
+  expiresAt: "2024-12-31T23:59:59Z"
+}
+
+vars:post-response {
+  identityId: bru.getResponseBody("data.id")
+  userId: bru.getResponseBody("data.userId")
+}
+
+docs {
+  # Create OAuth User (Manual)
+  
+  Manually creates an OAuth user identity. This is typically used internally
+  by the OAuth callback handlers, but can be used for testing.
+  
+  ## Request Body:
+  ```json
+  {
+    "provider": "google|github",
+    "providerId": "unique_provider_id",
+    "email": "user@example.com",
+    "profile": {
+      "id": "provider_id",
+      "name": "User Name",
+      "email": "user@example.com",
+      "picture": "avatar_url"
+    },
+    "accessToken": "provider_access_token",
+    "refreshToken": "provider_refresh_token",
+    "expiresAt": "2024-12-31T23:59:59Z"
+  }
+  ```
+  
+  ## Expected Response:
+  ```json
+  {
+    "success": true,
+    "data": {
+      "id": "identity_id",
+      "provider": "google",
+      "providerId": "google_123",
+      "userId": "user_id",
+      "email": "user@example.com",
+      "profile": {...},
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  }
+  ```
+  
+  ## Note:
+  This endpoint will create a new user if one doesn't exist with the provided email.
+}

@@ -1,0 +1,76 @@
+meta {
+  name: Create Email User
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/auth/email
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "{{email}}",
+    "profile": {
+      "name": "{{name}}",
+      "country": "{{country}}"
+    }
+  }
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:3000
+  email: "user@example.com"
+  name: "John Doe"
+  country: "United States"
+}
+
+vars:post-response {
+  identityId: bru.getResponseBody("data.id")
+  userId: bru.getResponseBody("data.userId")
+}
+
+docs {
+  # Create Email User
+  
+  Creates a user with email-based authentication.
+  
+  ## Request Body:
+  ```json
+  {
+    "email": "user@example.com",
+    "profile": {
+      "name": "John Doe",
+      "country": "United States"
+    }
+  }
+  ```
+  
+  ## Expected Response:
+  ```json
+  {
+    "success": true,
+    "data": {
+      "id": "identity_id",
+      "provider": "Email",
+      "providerId": "s111",
+      "userId": "user_id",
+      "email": "user@example.com",
+      "profile": "profile",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  }
+  ```
+  
+  ## Note:
+  This creates a user with the Email provider. The system will generate
+  a default providerId and create a user record if one doesn't exist.
+}

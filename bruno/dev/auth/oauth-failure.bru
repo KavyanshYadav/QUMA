@@ -1,0 +1,38 @@
+meta {
+  name: OAuth Failure
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/auth/failure
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:3000
+}
+
+docs {
+  # OAuth Failure
+  
+  This endpoint handles OAuth authentication failures.
+  
+  ## When it's called:
+  - User denies permission on OAuth provider
+  - Invalid OAuth configuration
+  - Network errors during OAuth flow
+  - Invalid authorization code
+  
+  ## Expected Response:
+  - **Response**: 302 Redirect to frontend error page
+  - **URL**: `{{frontendUrl}}/auth/error?error=authentication_failed`
+  
+  ## Frontend Handling:
+  The frontend should display an error message and provide a "Try Again" button.
+}

@@ -4,6 +4,8 @@ import dotEnv from 'dotenv';
 
 import { randomUUID } from 'crypto';
 import express from 'express';
+import passport from 'passport';
+import session from 'express-session';
 import { RequestContext } from '@quma/quma_ddd_base';
 import { WinstonAdapter } from '@quma/quma_ddd_base';
 import { Logger } from '@quma/quma_ddd_base';
@@ -22,11 +24,32 @@ initDB();
 
 const app = express();
 const AuthpublicPath = path.join(__dirname, 'public/authWeb');
+
+// Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Session configuration for Passport
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'your-session-secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  })
+);
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/web/auth', express.static(AuthpublicPath));
 
 app.get('/web/auth/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public/authWeb', 'index.html'));
 });
 
 app.use((req, res, next) => {

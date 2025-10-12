@@ -1,0 +1,62 @@
+meta {
+  name: Refresh Access Token
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/auth/refresh
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "refresh_token": "{{refreshToken}}"
+  }
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:3000
+  refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+
+vars:post-response {
+  newAccessToken: bru.getResponseBody("data.access_token")
+}
+
+docs {
+  # Refresh Access Token
+  
+  Refreshes an expired access token using a valid refresh token.
+  
+  ## Request Body:
+  ```json
+  {
+    "refresh_token": "your_refresh_token_here"
+  }
+  ```
+  
+  ## Expected Response:
+  ```json
+  {
+    "success": true,
+    "data": {
+      "access_token": "new_jwt_access_token"
+    }
+  }
+  ```
+  
+  ## Error Responses:
+  - **401 Unauthorized**: Invalid or expired refresh token
+  - **400 Bad Request**: Missing refresh token
+  
+  ## Usage:
+  Call this endpoint when your access token expires (typically after 7 days).
+  Store the new access token and continue using it for API calls.
+}

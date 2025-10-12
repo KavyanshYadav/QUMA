@@ -1,0 +1,44 @@
+meta {
+  name: OAuth GitHub Callback
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/auth/github/callback
+  body: none
+  auth: none
+}
+
+params:query {
+  code: {{githubAuthCode}}
+  state: {{state}}
+}
+
+headers {
+  Accept: application/json
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:3000
+  githubAuthCode: "abc123def456..."
+  state: "random_state_string"
+}
+
+docs {
+  # OAuth GitHub Callback
+  
+  This endpoint is called by GitHub after user authorization.
+  
+  ## Parameters:
+  - `code`: Authorization code from GitHub
+  - `state`: State parameter for security
+  
+  ## Expected Response:
+  - **Success**: 302 Redirect to frontend with tokens
+  - **Failure**: 302 Redirect to `/auth/failure`
+  
+  ## Note:
+  This endpoint is typically called automatically by GitHub during OAuth flow.
+  For testing, you can simulate it with a valid authorization code.
+}

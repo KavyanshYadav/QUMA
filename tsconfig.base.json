@@ -22,10 +22,10 @@
     "baseUrl": ".",
     "paths": {
       "@quma/config": ["packages/quma_config/dist"],
+      "@quma/db": ["packages/backend/src/db/index.ts"],
       "@quma/quma_ddd_base": ["packages/quma_ddd_base/dist"],
       "@quma/quma_types": ["packages/quma_types/dist"],
-      "@quma/webkit": ["packages/frontend_web_kit/dist"],
-      "@quma/db": ["packages/backend/src/db/index.ts"]
+      "@quma/webkit": ["packages/frontend_web_kit/dist"]
     }
   }
 }

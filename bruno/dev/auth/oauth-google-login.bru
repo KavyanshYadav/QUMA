@@ -1,0 +1,41 @@
+meta {
+  name: OAuth Google Login
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/auth/google
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:3000
+}
+
+docs {
+  # OAuth Google Login
+  
+  Initiates Google OAuth2 authentication flow.
+  
+  ## How it works:
+  1. User clicks this endpoint or is redirected here
+  2. User is redirected to Google's OAuth consent screen
+  3. After user grants permission, Google redirects to `/auth/google/callback`
+  4. Backend processes the callback and redirects to frontend with tokens
+  
+  ## Expected Flow:
+  - **Request**: GET /auth/google
+  - **Response**: 302 Redirect to Google OAuth
+  - **Final**: Redirect to frontend with access_token and refresh_token
+  
+  ## Environment Variables Required:
+  - `GOOGLE_CLIENT_ID`
+  - `GOOGLE_CLIENT_SECRET`
+  - `GOOGLE_CALLBACK_URL`
+}

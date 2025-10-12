@@ -1,0 +1,41 @@
+meta {
+  name: OAuth GitHub Login
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/auth/github
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:3000
+}
+
+docs {
+  # OAuth GitHub Login
+  
+  Initiates GitHub OAuth2 authentication flow.
+  
+  ## How it works:
+  1. User clicks this endpoint or is redirected here
+  2. User is redirected to GitHub's OAuth consent screen
+  3. After user grants permission, GitHub redirects to `/auth/github/callback`
+  4. Backend processes the callback and redirects to frontend with tokens
+  
+  ## Expected Flow:
+  - **Request**: GET /auth/github
+  - **Response**: 302 Redirect to GitHub OAuth
+  - **Final**: Redirect to frontend with access_token and refresh_token
+  
+  ## Environment Variables Required:
+  - `GITHUB_CLIENT_ID`
+  - `GITHUB_CLIENT_SECRET`
+  - `GITHUB_CALLBACK_URL`
+}

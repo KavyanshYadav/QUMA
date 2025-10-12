@@ -1,0 +1,60 @@
+meta {
+  name: Get User Profile
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/auth/profile
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+headers {
+  Accept: application/json
+  Authorization: Bearer {{accessToken}}
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:3000
+  accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+
+vars:post-response {
+  userId: bru.getResponseBody("data.userId")
+  email: bru.getResponseBody("data.email")
+  provider: bru.getResponseBody("data.provider")
+}
+
+docs {
+  # Get User Profile
+  
+  Retrieves the current user's profile information using JWT token.
+  
+  ## Authentication:
+  Requires a valid JWT access token in the Authorization header.
+  
+  ## Expected Response:
+  ```json
+  {
+    "success": true,
+    "data": {
+      "userId": "user_123",
+      "email": "user@example.com",
+      "provider": "google",
+      "providerId": "google_123"
+    }
+  }
+  ```
+  
+  ## Error Responses:
+  - **401 Unauthorized**: Invalid or expired token
+  - **400 Bad Request**: Missing token
+  
+  ## Usage:
+  Use this endpoint to verify token validity and get user information.
+}
