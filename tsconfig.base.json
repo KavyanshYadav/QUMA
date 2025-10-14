@@ -22,11 +22,11 @@
     "target": "es2022",
     "baseUrl": ".",
     "paths": {
-      "@quma/config": ["packages/quma_config/dist"],
+      "@quma/config": ["packages/quma_config/src/index.ts"],
       "@quma/db": ["packages/backend/src/db/index.ts"],
       "@quma/quma_ddd_base": ["packages/quma_ddd_base/dist"],
-      "@quma/types": ["packages/quma_types/src/index.ts"],
       "@quma/quma_types": ["packages/quma_types/src/index.ts"],
+      "@quma/types": ["packages/quma_types/src/index.ts"],
       "@quma/webkit": ["packages/frontend_web_kit/dist"],
       "@quma_types/*": ["packages/quma_types/src/*"]
     }
