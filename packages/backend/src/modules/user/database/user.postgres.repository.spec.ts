@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { UserPostGresRepo } from './user.postgres.repository';
-import { UserEntity } from '../domain/user.entity';
-import { runInTestContext } from '../../../test-utils';
+import { UserPostGresRepo } from './user.postgres.repository.js';
+import { UserEntity } from '../domain/user.entity.js';
+import { runInTestContext } from '../../../test-utils.js';
 
 // Mock the database module
 vi.mock('../../../db/index', () => ({

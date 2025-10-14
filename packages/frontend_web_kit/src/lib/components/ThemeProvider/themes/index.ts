@@ -1,2 +1,2 @@
-export * from './darkTheme';
-export * from './deafaultTheme';
+export * from './darkTheme.js';
+export * from './deafaultTheme.js';

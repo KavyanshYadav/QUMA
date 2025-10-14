@@ -1,5 +1,5 @@
 import jwt, { Secret, SignOptions } from 'jsonwebtoken';
-import { oauthConfig } from '../config/oauth.config';
+import { oauthConfig } from '../config/oauth.config.js';
 import { injectable } from 'tsyringe';
 
 export interface JWTPayload {

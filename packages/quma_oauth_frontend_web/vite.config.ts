@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tsconf from 'vite-tsconfig-paths';
-// import { AUTH_WEB_BASE_URL } from '../quma_config/src/index';
+// import { AUTH_WEB_BASE_URL } from '../quma_config/src/index.js';
 
 export default defineConfig(() => ({
   root: __dirname,

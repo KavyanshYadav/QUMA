@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { IdentityEntity } from './auth.identity.entity';
-import { ProviderName } from './auth.value.objects';
-import { runInTestContext } from '../../../test-utils';
+import { IdentityEntity } from './auth.identity.entity.js';
+import { ProviderName } from './auth.value.objects.js';
+import { runInTestContext } from '../../../test-utils.js';
 
 describe('IdentityEntity', () => {
   describe('create', () => {

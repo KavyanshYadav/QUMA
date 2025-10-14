@@ -1,7 +1,7 @@
 import { css, SerializedStyles } from '@emotion/react';
 import { defaultTheme, useTheme } from '../ThemeProvider';
 import { forwardRef } from 'react';
-import { SkeletonLoader } from '../Loader/Loader';
+import { SkeletonLoader } from '../Loader/Loader.js';
 
 export type btnType = 'primary' | 'secondary' | 'accent';
 

@@ -1,5 +1,5 @@
-import { AggregateID, AggregateRoot } from '@quma/quma_ddd_base';
-import { CreateIdentityProp, IdentityProps } from './auth.entity.types';
+import { AggregateID, AggregateRoot } from '@quma/ddd';
+import { CreateIdentityProp, IdentityProps } from './auth.entity.types.js';
 import { randomUUID } from 'crypto';
 
 export class IdentityEntity extends AggregateRoot<IdentityProps> {

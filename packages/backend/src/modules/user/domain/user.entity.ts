@@ -1,8 +1,8 @@
 import { randomUUID } from 'crypto';
-import { AggregateRoot } from '@quma/quma_ddd_base';
-import { AggregateID } from '@quma/quma_ddd_base';
-import { CreateUserProps, UserProps, UserRoles } from './user.types';
-import { UserCreatedDomainEvent } from './events/user-created-event';
+import { AggregateRoot } from '@quma/ddd';
+import { AggregateID } from '@quma/ddd';
+import { CreateUserProps, UserProps, UserRoles } from './user.types.js';
+import { UserCreatedDomainEvent } from './events/user-created-event.js';
 
 export class UserEntity extends AggregateRoot<UserProps> {
   public override validate(): void {

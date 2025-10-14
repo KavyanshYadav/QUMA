@@ -1,5 +1,4 @@
 import { IDatabase } from './IDatabase.js';
-import {} from '@quma/quma_types';
 export abstract class BaseDatabase implements IDatabase {
   protected connected = false;
 

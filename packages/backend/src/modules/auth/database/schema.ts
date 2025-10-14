@@ -1,7 +1,7 @@
 import { pgTable, varchar, timestamp, jsonb } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
 
-import { users } from '../../user/database/schema';
+import { users } from '../../user/database/schema.js';
 
 export const identityTable = pgTable('oauth_accounts', {
   id: varchar('id', { length: 36 })

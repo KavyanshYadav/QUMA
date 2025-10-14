@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // Mock the Logger from quma_ddd_base
-vi.mock('@quma/quma_ddd_base', async () => {
-  const actual = await vi.importActual('@quma/quma_ddd_base');
+vi.mock('@quma/ddd', async () => {
+  const actual = await vi.importActual('@quma/ddd');
   return {
     ...actual,
     Logger: {
@@ -14,11 +14,11 @@ vi.mock('@quma/quma_ddd_base', async () => {
   };
 });
 
-import { CreateUserService } from './create-user.service';
-import { CreateUserCommand } from './create-user.command';
-import { UserPostGresRepo } from '../../database/user.postgres.repository';
-import { UserEntity } from '../../domain/user.entity';
-import { runInTestContext } from '../../../../test-utils';
+import { CreateUserService } from './create-user.service.js';
+import { CreateUserCommand } from './create-user.command.js';
+import { UserPostGresRepo } from '../../database/user.postgres.repository.js';
+import { UserEntity } from '../../domain/user.entity.js';
+import { runInTestContext } from '../../../../test-utils.js';
 
 describe('CreateUserService', () => {
   let createUserService: CreateUserService;

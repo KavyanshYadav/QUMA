@@ -1,9 +1,9 @@
-import { Logger } from '@quma/quma_ddd_base';
-import { CommandHandler } from '@quma/quma_ddd_base';
-import { UserEntity } from '../../domain/user.entity';
-import { CreateUserCommand } from './create-user.command';
+import { Logger } from '@quma/ddd';
+import { CommandHandler } from '@quma/ddd';
+import { UserEntity } from '../../domain/user.entity.js';
+import { CreateUserCommand } from './create-user.command.js';
 import { inject, injectable } from 'tsyringe';
-import { UserPostGresRepo } from '../../database/user.postgres.repository';
+import { UserPostGresRepo } from '../../database/user.postgres.repository.js';
 
 @injectable()
 export class CreateUserService

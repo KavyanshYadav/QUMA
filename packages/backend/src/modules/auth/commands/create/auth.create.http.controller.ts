@@ -1,9 +1,9 @@
 import { injectable, inject } from 'tsyringe';
 import { Request, Response } from 'express';
-import { AuthEmailRequestDTO } from '@quma/quma_types';
-import { Logger } from '@quma/quma_ddd_base';
-import { MemoryBus } from '@quma/quma_ddd_base';
-import { CreateAuthWithEmailCommand } from '../auth.createWithEmail';
+import { AuthEmailRequestDTO } from '@quma/types';
+import { Logger } from '@quma/ddd';
+import { MemoryBus } from '@quma/ddd';
+import { CreateAuthWithEmailCommand } from '../auth.createWithEmail.js';
 @injectable()
 export class CreateAuthHttpController {
   constructor(@inject(MemoryBus) private readonly memoryBus: MemoryBus) {}

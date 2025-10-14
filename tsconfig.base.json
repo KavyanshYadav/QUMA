@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "composite": true,
+    "declaration": true,
     "declarationMap": true,
-    "emitDeclarationOnly": true,
+    "emitDeclarationOnly": false,
     "importHelpers": true,
     "isolatedModules": true,
     "lib": ["dom", "dom.iterable", "esnext", "es2022"],
@@ -15,19 +16,13 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "skipLibCheck": true,
-    "jsxImportSource": "@emotion/reac",
+    "jsxImportSource": "@emotion/react",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "strict": true,
     "target": "es2022",
     "baseUrl": ".",
     "paths": {
-      "@quma/config": ["packages/quma_config/src/index.ts"],
-      "@quma/db": ["packages/backend/src/db/index.ts"],
-      "@quma/quma_ddd_base": ["packages/quma_ddd_base/dist"],
-      "@quma/quma_types": ["packages/quma_types/src/index.ts"],
-      "@quma/types": ["packages/quma_types/src/index.ts"],
-      "@quma/webkit": ["packages/frontend_web_kit/dist"],
       "@quma_types/*": ["packages/quma_types/src/*"]
     }
   }

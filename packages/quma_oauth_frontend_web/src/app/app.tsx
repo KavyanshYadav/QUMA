@@ -1,14 +1,9 @@
-// import NxWelcome from './nx-welcome';
+// import NxWelcome from './nx-welcome.js';
 import './index.css';
-import { UserResponseDto } from '@quma/quma_types';
-import { Route, Routes, Link } from 'react-router-dom';
+import { UserResponseDto } from '@quma/types';
 import { Button, ThemeProvider, useTheme, Input } from '@quma/webkit';
 import { css } from '@emotion/react';
-import { SkeletonLoader } from 'packages/frontend_web_kit/src/lib/components/Loader/Loader';
-import { AUTH_WEB_BASE_URL } from '@quma/config';
-import LoginWidget from './widgets/LoginWidget';
-import LoginScreen from './pages/loginScreen';
-import { MemoryBus } from '@quma/quma_ddd_base';
+import LoginScreen from './pages/loginScreen.js';
 const StyledApp = css`
   // Your style here
 `;
@@ -41,10 +36,6 @@ export function App() {
     new Date(),
     new Date()
   );
-
-  console.log(user);
-  const Me = new MemoryBus();
-  console.log(Me);
 
   return (
     <ThemeProvider>

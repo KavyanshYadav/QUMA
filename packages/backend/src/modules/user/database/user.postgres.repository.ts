@@ -1,8 +1,8 @@
-import { db } from '../../../db/index';
-import { UserRepositoryPort } from './user.repository.port';
-import { users } from './schema';
+import { db } from '../../../db/index.js';
+import { UserRepositoryPort } from './user.repository.port.js';
+import { users } from './schema.js';
 import { eq } from 'drizzle-orm';
-import { UserEntity } from '../domain/user.entity';
+import { UserEntity } from '../domain/user.entity.js';
 
 export class UserPostGresRepo extends UserRepositoryPort {
   override async isEmailTaken(email: string): Promise<UserEntity | undefined> {

@@ -6,8 +6,8 @@ import React, {
   useContext,
 } from 'react';
 import { Theme } from '../../types';
-import { defaultTheme } from './themes/deafaultTheme';
-import { darkTheme } from './themes/darkTheme';
+import { defaultTheme } from './themes/deafaultTheme.js';
+import { darkTheme } from './themes/darkTheme.js';
 
 interface ThemeContextType {
   theme: Theme;

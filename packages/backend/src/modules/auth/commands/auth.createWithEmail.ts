@@ -1,4 +1,4 @@
-import { Command, CommandProps } from '@quma/quma_ddd_base';
+import { Command, CommandProps } from '@quma/ddd';
 
 export class CreateAuthWithEmailCommand extends Command {
   //   readonly provider: ProviderName;

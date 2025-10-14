@@ -23,8 +23,8 @@ export default defineConfig(() => ({
   resolve: {
     alias: {
       '@quma/backend': resolve(__dirname, 'src'),
-      '@quma/quma_ddd_base': resolve(__dirname, '../quma_ddd_base/src'),
-      '@quma/quma_types': resolve(__dirname, '../quma_types/src'),
+      '@quma/ddd': resolve(__dirname, '../quma_ddd_base/src'),
+      '@quma/types': resolve(__dirname, '../quma_types/src'),
     },
   },
 }));

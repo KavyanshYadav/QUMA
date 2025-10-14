@@ -92,10 +92,6 @@ export function getRouteConfigFromKey(key: RouteKey) {
 }
 
 // --- ROUTE TYPE EXTRACTION LOGIC ---
-// Flatten nested modules into route definitions
-type FlattenRoutes<T> = {
-  [K in keyof T]: T[K] extends { schemas: any } ? T[K] : FlattenRoutes<T[K]>;
-}[keyof T];
 
 // Route key becomes a string path (e.g. "AUTH_MODULE.CREATE_WITH_EMAIL")
 type NestedKeyOf<T> = {
@@ -104,7 +100,6 @@ type NestedKeyOf<T> = {
     : `${K}.${NestedKeyOf<T[K]>}`;
 }[keyof T & string];
 
-type RouteDefinitions = FlattenRoutes<typeof AppRouter>;
 export type RouteKey = NestedKeyOf<typeof AppRouter>;
 
 type GetRouteConfig<K extends RouteKey> =

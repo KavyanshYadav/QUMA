@@ -1,6 +1,7 @@
 import React from 'react';
 import { css, keyframes } from '@emotion/react';
-import { useTheme } from '../ThemeProvider'; // Adjust path as needed
+import { useTheme } from '../ThemeProvider';
+// Adjust path as needed
 import { Theme } from '../../types/Theme/theme'; // Adjust path as needed
 
 // A fallback theme for standalone usage

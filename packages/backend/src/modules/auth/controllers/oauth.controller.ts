@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import { JWTService } from '../services/jwt.service';
-import { IdentityEntity } from '../domain/auth.identity.entity';
+import { JWTService } from '../services/jwt.service.js';
+import { IdentityEntity } from '../domain/auth.identity.entity.js';
 
 export class OAuthController {
   private jwtService: JWTService;

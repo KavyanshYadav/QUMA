@@ -1,6 +1,6 @@
-import { PostGresDatabase } from '@quma/quma_ddd_base';
+import { PostGresDatabase } from '@quma/ddd';
 import { drizzle, NodePgDatabase } from 'drizzle-orm/node-postgres';
-import { users } from '../modules/user/database/schema';
+import { users } from '../modules/user/database/schema.js';
 
 const pool = new PostGresDatabase({
   host: process.env.DB_HOST || 'localhost',

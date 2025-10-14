@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { container } from 'tsyringe';
-import { CreateUserService } from './commands/create_user/create-user.service';
-import { CrateUserHttpController } from './commands/create_user/create-user.http.controller';
-import { MemoryBus } from '@quma/quma_ddd_base';
-import { CreateUserCommand } from './commands/create_user/create-user.command';
-import { UserPostGresRepo } from './database/user.postgres.repository';
+import { CreateUserService } from './commands/create_user/create-user.service.js';
+import { CrateUserHttpController } from './commands/create_user/create-user.http.controller.js';
+import { MemoryBus } from '@quma/ddd';
+import { CreateUserCommand } from './commands/create_user/create-user.command.js';
+import { UserPostGresRepo } from './database/user.postgres.repository.js';
 export class UserModule {
   public readonly router: Router;
 

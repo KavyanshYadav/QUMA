@@ -1,9 +1,9 @@
 import { Strategy as GitHubStrategy } from 'passport-github2';
-import { oauthConfig } from '../config/oauth.config';
+import { oauthConfig } from '../config/oauth.config.js';
 import { container } from 'tsyringe';
-import { CreateWithOauthService } from '../commands/create/services/createWithOauthService';
-import { CreateAuthWithOauthCommand } from '../commands/auth.createWithOauth';
-import { IdentityEntity } from '../domain/auth.identity.entity';
+import { CreateWithOauthService } from '../commands/create/services/createWithOauthService.js';
+import { CreateAuthWithOauthCommand } from '../commands/auth.createWithOauth.js';
+import { IdentityEntity } from '../domain/auth.identity.entity.js';
 
 type PassportCallback = (
   error: Error | null,

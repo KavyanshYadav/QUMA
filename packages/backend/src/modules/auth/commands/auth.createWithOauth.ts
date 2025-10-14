@@ -1,5 +1,5 @@
-import { Command, CommandProps } from '@quma/quma_ddd_base';
-import { ProviderName } from '../domain/auth.value.objects';
+import { Command, CommandProps } from '@quma/ddd';
+import { ProviderName } from '../domain/auth.value.objects.js';
 
 export interface OAuthProfile {
   id?: string;

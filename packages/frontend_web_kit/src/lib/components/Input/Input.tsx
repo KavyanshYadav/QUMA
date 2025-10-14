@@ -1,6 +1,6 @@
 import { css, SerializedStyles } from '@emotion/react';
 import { defaultTheme, useTheme } from '../ThemeProvider';
-import { Theme } from '../../types/Theme/theme'; // Assuming this is the path to your types
+import { Theme } from '../../types/Theme/theme.js'; // Assuming this is the path to your types
 import { forwardRef, InputHTMLAttributes } from 'react';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {

@@ -1,17 +1,17 @@
 import { Router } from 'express';
-import { MemoryBus } from '@quma/quma_ddd_base';
+import { MemoryBus } from '@quma/ddd';
 import { container } from 'tsyringe';
 import passport from 'passport';
-import { AuthPostGresRepo } from './database/prostgres.auth.repo';
-import { CreateAuthWithEmailCommand } from './commands/auth.createWithEmail';
-import { CreateAuthWithOauthCommand } from './commands/auth.createWithOauth';
-import { CreateAuthHttpController } from './commands/create/auth.create.http.controller';
-import { CreateWithEmailService } from './commands/create/services/createWithEmailService';
-import { CreateWithOauthService } from './commands/create/services/createWithOauthService';
-import { JWTService } from './services/jwt.service';
-import { OAuthController } from './controllers/oauth.controller';
-import { googleStrategy } from './strategies/google.strategy';
-import { githubStrategy } from './strategies/github.strategy';
+import { AuthPostGresRepo } from './database/prostgres.auth.repo.js';
+import { CreateAuthWithEmailCommand } from './commands/auth.createWithEmail.js';
+import { CreateAuthWithOauthCommand } from './commands/auth.createWithOauth.js';
+import { CreateAuthHttpController } from './commands/create/auth.create.http.controller.js';
+import { CreateWithEmailService } from './commands/create/services/createWithEmailService.js';
+import { CreateWithOauthService } from './commands/create/services/createWithOauthService.js';
+import { JWTService } from './services/jwt.service.js';
+import { OAuthController } from './controllers/oauth.controller.js';
+import { googleStrategy } from './strategies/google.strategy.js';
+import { githubStrategy } from './strategies/github.strategy.js';
 import { AppRouter } from '@quma/config';
 export class AuthMoudle {
   public router: Router;

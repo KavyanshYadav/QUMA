@@ -1,10 +1,10 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 import { injectable, inject } from 'tsyringe';
 import { Request, Response } from 'express';
-import { CreateUserCommand } from './create-user.command';
-import { UserRequestDto } from '@quma/quma_types';
-import { Logger } from '@quma/quma_ddd_base';
-import { MemoryBus } from '@quma/quma_ddd_base';
+import { CreateUserCommand } from './create-user.command.js';
+import { UserRequestDto } from '@quma/types';
+import { Logger } from '@quma/ddd';
+import { MemoryBus } from '@quma/ddd';
 
 @injectable()
 export class CrateUserHttpController {

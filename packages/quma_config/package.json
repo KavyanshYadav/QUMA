@@ -1,6 +1,7 @@
 {
   "name": "@quma/config",
   "version": "0.0.1",
+  "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -17,7 +18,7 @@
     "!**/*.tsbuildinfo"
   ],
   "dependencies": {
-    "@quma/types": "workspace:*",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "zod": "^4.1.11"
   }
 }

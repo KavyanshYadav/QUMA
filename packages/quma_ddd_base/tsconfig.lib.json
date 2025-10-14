@@ -12,9 +12,6 @@
   "references": [
     {
       "path": "../quma_config/tsconfig.lib.json"
-    },
-    {
-      "path": "../quma_types/tsconfig.lib.json"
     }
   ],
   "exclude": [

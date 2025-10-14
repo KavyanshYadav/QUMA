@@ -1,5 +1,5 @@
 // src/theme/defaultTheme.ts
-import { Theme } from '../../../types/index';
+import { Theme } from '../../../types/index.js';
 
 export const defaultTheme: Theme = {
   mode: 'light',

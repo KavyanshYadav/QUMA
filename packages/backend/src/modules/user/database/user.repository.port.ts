@@ -1,4 +1,4 @@
-import { UserEntity } from '../domain/user.entity';
+import { UserEntity } from '../domain/user.entity.js';
 
 export abstract class UserRepositoryPort {
   abstract isEmailTaken(email: string): Promise<undefined | UserEntity>;

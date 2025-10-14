@@ -1,4 +1,4 @@
-import { ProviderName } from './auth.value.objects';
+import { ProviderName } from './auth.value.objects.js';
 
 export interface IdentityProps {
   id: string;

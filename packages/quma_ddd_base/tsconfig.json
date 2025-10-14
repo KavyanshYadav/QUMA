@@ -7,9 +7,6 @@
       "path": "../quma_config"
     },
     {
-      "path": "../quma_types"
-    },
-    {
       "path": "./tsconfig.lib.json"
     },
     {

@@ -1,10 +1,10 @@
-import { CommandHandler } from '@quma/quma_ddd_base';
-import { CreateAuthWithEmailCommand } from '../../auth.createWithEmail';
-import { IdentityEntity } from '../../../domain/auth.identity.entity';
+import { CommandHandler } from '@quma/ddd';
+import { CreateAuthWithEmailCommand } from '../../auth.createWithEmail.js';
+import { IdentityEntity } from '../../../domain/auth.identity.entity.js';
 import { inject, injectable } from 'tsyringe';
-import type { AuthRepoBasePort } from '../../../database/auth.repository.port';
-import { AuthPostGresRepo } from '../../../database/prostgres.auth.repo';
-import { UserPostGresRepo } from '../../../../user/database/user.postgres.repository';
+import type { AuthRepoBasePort } from '../../../database/auth.repository.port.js';
+import { AuthPostGresRepo } from '../../../database/prostgres.auth.repo.js';
+import { UserPostGresRepo } from '../../../../user/database/user.postgres.repository.js';
 
 @injectable()
 export class CreateWithEmailService

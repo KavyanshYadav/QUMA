@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginWidget from '../widgets/LoginWidget';
+import LoginWidget from '../widgets/LoginWidget.js';
 import { css } from '@emotion/react';
 
 function LoginScreen() {

@@ -1,5 +1,5 @@
 import { Theme } from '../../../types';
-import { defaultTheme } from './deafaultTheme';
+import { defaultTheme } from './deafaultTheme.js';
 
 export const darkTheme: Theme = {
   ...defaultTheme,

@@ -1,8 +1,8 @@
 import { inject, injectable } from 'tsyringe';
-import type { DrizzleDB } from '../../../db/index';
-import { IdentityEntity } from '../domain/auth.identity.entity';
-import { AuthRepoBasePort } from './auth.repository.port';
-import { identityTable } from './schema';
+import type { DrizzleDB } from '../../../db/index.js';
+import { IdentityEntity } from '../domain/auth.identity.entity.js';
+import { AuthRepoBasePort } from './auth.repository.port.js';
+import { identityTable } from './schema.js';
 
 @injectable()
 export class AuthPostGresRepo implements AuthRepoBasePort {

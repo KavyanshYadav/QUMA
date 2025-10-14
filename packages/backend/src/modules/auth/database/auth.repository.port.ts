@@ -1,4 +1,4 @@
-import { IdentityEntity } from '../domain/auth.identity.entity';
+import { IdentityEntity } from '../domain/auth.identity.entity.js';
 
 export interface AuthRepoBasePort {
   //   findByProviderId(

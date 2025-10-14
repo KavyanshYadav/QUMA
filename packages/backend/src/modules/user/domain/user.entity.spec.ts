@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { UserEntity } from './user.entity';
+import { UserEntity } from './user.entity.js';
 import { UserRoles } from './user.types';
-import { UserCreatedDomainEvent } from './events/user-created-event';
-import { runInTestContext } from '../../../test-utils';
+import { UserCreatedDomainEvent } from './events/user-created-event.js';
+import { runInTestContext } from '../../../test-utils.js';
 
 describe('UserEntity', () => {
   describe('create', () => {
