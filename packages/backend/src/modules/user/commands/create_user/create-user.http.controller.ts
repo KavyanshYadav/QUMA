@@ -12,7 +12,6 @@ export class CrateUserHttpController {
 
   async handle(req: Request, res: Response) {
     // const para =  CreateUserRequestSchema.parse(req.body);
-
     const para: UserRequestDto = req.body;
     Logger.info(JSON.stringify(para));
     //const para = req.body;

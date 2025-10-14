@@ -4,6 +4,9 @@
   "include": [],
   "references": [
     {
+      "path": "../quma_types"
+    },
+    {
       "path": "./tsconfig.lib.json"
     }
   ]

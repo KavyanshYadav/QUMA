@@ -42,7 +42,7 @@
             "cjs"
           ],
           "bundle": true,
-          "main": "packages/backend/src/main.ts",
+          "main": "packages/backend/src/index.ts",
           "tsConfig": "packages/backend/tsconfig.app.json",
           "assets": [
             "packages/backend/src/assets"
