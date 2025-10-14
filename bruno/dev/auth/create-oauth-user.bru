@@ -10,6 +10,11 @@ post {
   auth: none
 }
 
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
 body:json {
   {
     "provider": "{{provider}}",
@@ -25,11 +30,6 @@ body:json {
     "refreshToken": "{{refreshToken}}",
     "expiresAt": "{{expiresAt}}"
   }
-}
-
-headers {
-  Accept: application/json
-  Content-Type: application/json
 }
 
 vars:pre-request {

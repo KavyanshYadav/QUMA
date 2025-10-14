@@ -6,6 +6,9 @@ const BtnCom = () => {
   const theme = useTheme()?.theme;
   return (
     <Button
+      onClick={() => {
+        window.open('', windowName, windowFeatures);
+      }}
       iconLeft={<span>asdasd</span>}
       label="Google"
       sx={css`

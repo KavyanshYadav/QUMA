@@ -12,7 +12,6 @@ import { JWTService } from './services/jwt.service';
 import { OAuthController } from './controllers/oauth.controller';
 import { googleStrategy } from './strategies/google.strategy';
 import { githubStrategy } from './strategies/github.strategy';
-
 export class AuthMoudle {
   public router: Router;
   private oauthController: OAuthController;
