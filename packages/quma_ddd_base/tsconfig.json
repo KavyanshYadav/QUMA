@@ -4,13 +4,16 @@
   "include": [],
   "references": [
     {
+      "path": "../quma_config"
+    },
+    {
+      "path": "../quma_types"
+    },
+    {
       "path": "./tsconfig.lib.json"
     },
     {
       "path": "./tsconfig.spec.json"
-    },
-    {
-      "path": "../quma_types"
     }
   ]
 }

@@ -33,8 +33,8 @@ export function createResponseSchema(responses: Record<number, ZodTypeAny>) {
   return z.union(responseSchemas as [ZodTypeAny, ZodTypeAny, ...ZodTypeAny[]]);
 }
 
-// Zod schema mirroring the ApiErrorResponse type
-const ApiErrorResponseSchema = z.object({
+// Runtime schema that mirrors the ApiErrorResponse type
+export const ApiErrorSchema = z.object({
   status: z.literal('error'),
   error: z.object({
     code: z.string(),
@@ -73,7 +73,7 @@ export const AppRouter = {
         body: AuthCreateEmailRequestDTO,
         responses: {
           201: AuthCreateEmailResponseDTO,
-          400: ApiErrorResponseSchema,
+          400: ApiErrorSchema,
         },
       },
     }),

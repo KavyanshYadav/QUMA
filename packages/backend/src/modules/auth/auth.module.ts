@@ -12,6 +12,7 @@ import { JWTService } from './services/jwt.service';
 import { OAuthController } from './controllers/oauth.controller';
 import { googleStrategy } from './strategies/google.strategy';
 import { githubStrategy } from './strategies/github.strategy';
+import { AppRouter } from '@quma/config';
 export class AuthMoudle {
   public router: Router;
   private oauthController: OAuthController;
@@ -48,10 +49,13 @@ export class AuthMoudle {
       container.resolve(CreateWithOauthService)
     );
 
-    this.router.post('/auth/email', async (req, res) => {
-      const controller = container.resolve(CreateAuthHttpController);
-      controller.handle(req, res);
-    });
+    this.router.post(
+      AppRouter.AUTH_MODULE.CREATE_WITH_EMAIL.path,
+      async (req, res) => {
+        const controller = container.resolve(CreateAuthHttpController);
+        controller.handle(req, res);
+      }
+    );
 
     this.router.post('/auth/oauth', async (req, res) => {
       try {

@@ -39,6 +39,15 @@
   "references": [
     {
       "path": "../quma_ddd_base/tsconfig.lib.json"
+    },
+    {
+      "path": "../quma_config/tsconfig.lib.json"
+    },
+    {
+      "path": "../frontend_web_kit/tsconfig.lib.json"
+    },
+    {
+      "path": "../quma_types/tsconfig.lib.json"
     }
   ],
   "references": [

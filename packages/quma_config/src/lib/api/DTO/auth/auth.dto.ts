@@ -6,3 +6,5 @@ export const AuthCreateEmailRequestDTO = z.object({
 export const AuthCreateEmailResponseDTO = z.object({
   message: z.string(),
 });
+
+
