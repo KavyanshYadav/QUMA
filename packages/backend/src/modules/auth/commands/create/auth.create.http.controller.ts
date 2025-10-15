@@ -2,7 +2,7 @@ import { injectable, inject } from 'tsyringe';
 import { MemoryBus, BaseController } from '@quma/ddd';
 import { CreateAuthWithEmailCommand } from '../auth.createWithEmail.js';
 
-const key = 'AUTH_MODULE.CREATE_WITH_EMAIL';
+const key = 'AUTH_MODULE.CREATE_WITH_OAUTH';
 
 @injectable()
 export class CreateAuthHttpController extends BaseController<typeof key> {
@@ -10,15 +10,18 @@ export class CreateAuthHttpController extends BaseController<typeof key> {
     super();
   }
 
-  protected override getRouterKey(): 'AUTH_MODULE.CREATE_WITH_EMAIL' {
+  protected override getRouterKey(): 'AUTH_MODULE.CREATE_WITH_OAUTH' {
     return key;
   }
 
   protected override async execute(req: {
     params: unknown;
     query: unknown;
-    body: { email: string };
-  }): Promise<{ statusCode: 200 | 201; data: { message: string } }> {
+    body: { email: string; providerKEY: number };
+  }): Promise<{
+    statusCode: 200 | 201;
+    data: { email: string; providerKEY: number };
+  }> {
     {
       // const para =  CreateUserRequestSchema.parse(req.body);
       console.log(req);
@@ -31,9 +34,10 @@ export class CreateAuthHttpController extends BaseController<typeof key> {
       );
 
       return {
-        statusCode: 200,
+        statusCode: 201,
         data: {
-          message: 'auth created',
+          email: 'dsd',
+          providerKEY: 123213,
         },
       };
     }
