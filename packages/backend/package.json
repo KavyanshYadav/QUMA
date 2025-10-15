@@ -10,21 +10,16 @@
         "outputs": [
           "{options.outputPath}"
         ],
-        "outputPath": "dist/apps/@quma/backend",
+        "outputPath": "packages/backend/",
         "cache": false,
         "options": {
           "commands": [
             "nx build @quma/quma_oauth_frontend_web",
-            "nx run @quma/backend:build:tsc",
-            "rimraf packages/backend/dist/apps/backend/public",
-            "copyfiles --up 3 \"packages/quma_oauth_frontend_web/dist/**/*\" \"packages/backend/dist/public/authWeb\""
+            "nx run @quma/backend:build:tsc"
           ]
         },
         "parallel": false,
-        "inputs": [
-          "production",
-          "^production"
-        ]
+        "inputs": []
       },
       "build:esbuild": {
         "executor": "@nx/esbuild:esbuild",
@@ -120,23 +115,10 @@
         "executor": "nx:noop"
       },
       "serve": {
-        "continuous": true,
-        "executor": "@nx/js:node",
-        "defaultConfiguration": "development",
-        "dependsOn": [
-          "^build"
-        ],
+        "executor": "nx:run-commands",
         "options": {
-          "buildTarget": "@quma/backend:build",
-          "runBuildTargetDependencies": false
-        },
-        "configurations": {
-          "development": {
-            "buildTarget": "@quma/backend:build:esbuild:development"
-          },
-          "production": {
-            "buildTarget": "@quma/backend:build:esbuild:production"
-          }
+          "command": "tsc --build tsconfig.json --watch & node ./dist/index.js",
+          "cwd": "packages/backend/"
         }
       },
       "test": {

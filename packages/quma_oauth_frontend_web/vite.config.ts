@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tsconf from 'vite-tsconfig-paths';
+import path from 'path';
 // import { AUTH_WEB_BASE_URL } from '../quma_config/src/index.js';
 
 export default defineConfig(() => ({
@@ -27,6 +28,7 @@ export default defineConfig(() => ({
     reportCompressedSize: true,
     commonjsOptions: {
       transformMixedEsModules: true,
+      outDir: path.resolve(__dirname, '../backend/dist/public/authWeb'),
     },
   },
   test: {

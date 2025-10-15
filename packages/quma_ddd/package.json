@@ -5,6 +5,9 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --build "
+  },
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -17,13 +20,7 @@
     "dist",
     "!**/*.tsbuildinfo"
   ],
-  "dependencies": {
-    "@quma/config": "workspace:",
-    "tslib": "^2.3.0",
-    "winston": "^3.18.3",
-    "pg": "^8.16.3",
-    "express": "^4.21.2"
-  },
+  "dependencies": {},
   "devDependencies": {
     "vite-tsconfig-paths": "^5.1.4"
   }
