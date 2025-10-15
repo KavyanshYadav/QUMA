@@ -4,14 +4,7 @@
     "outDir": "dist",
     "types": ["node"],
     "rootDir": "src",
-    "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo",
-    "paths": {
-      "@quma/ddd": ["../quma_ddd_base/dist/index.d.ts"],
-      "@quma/ddd/*": ["../quma_ddd_base/dist/*"],
-      "@quma/types": ["../quma_types/dist/index.d.ts"],
-      "@quma/config": ["../quma_config/dist/index.d.ts"],
-      "@quma/webkit": ["../frontend_web_kit/dist/index.d.ts"]
-    }
+    "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo"
   },
   "include": ["src/**/*.ts"],
   "exclude": [
@@ -26,13 +19,13 @@
   ],
   "references": [
     {
-      "path": "../quma_types/tsconfig.lib.json"
-    },
-    {
       "path": "../quma_config/tsconfig.lib.json"
     },
     {
-      "path": "../quma_ddd_base/tsconfig.lib.json"
+      "path": "../quma_ddd/tsconfig.lib.json"
+    },
+    {
+      "path": "../quma_types/tsconfig.lib.json"
     }
   ]
 }

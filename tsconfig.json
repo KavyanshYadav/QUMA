@@ -13,9 +13,6 @@
       "path": "./packages/quma_types"
     },
     {
-      "path": "./packages/quma_ddd_base"
-    },
-    {
       "path": "./packages/quma_oauth_frontend_web-e2e"
     },
     {
@@ -26,6 +23,9 @@
     },
     {
       "path": "./packages/quma_config"
+    },
+    {
+      "path": "./packages/quma_ddd"
     }
   ]
 }

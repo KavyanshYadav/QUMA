@@ -163,8 +163,8 @@
     "reflect-metadata": "^0.2.2",
     "tsyringe": "^4.10.0",
     "winston": "^3.18.3",
-    "@quma/types": "workspace:*",
-    "@quma/ddd": "workspace:*",
-    "@quma/config": "workspace:*"
+    "@quma/types": "workspace:",
+    "@quma/ddd": "workspace:",
+    "@quma/config": "workspace:"
   }
 }

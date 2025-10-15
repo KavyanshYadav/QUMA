@@ -8,13 +8,13 @@
   },
   "references": [
     {
-      "path": "../quma_types"
-    },
-    {
       "path": "../quma_config"
     },
     {
-      "path": "../quma_ddd_base"
+      "path": "../quma_ddd"
+    },
+    {
+      "path": "../quma_types"
     },
     {
       "path": "./tsconfig.app.json"
