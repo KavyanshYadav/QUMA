@@ -10,26 +10,23 @@ post {
   auth: none
 }
 
-body:json {
-  {
-    "email": "{{email}}",
-    "profile": {
-      "name": "{{name}}",
-      "country": "{{country}}"
-    }
-  }
-}
-
 headers {
   Accept: application/json
   Content-Type: application/json
 }
 
+body:json {
+  {
+    "email": "{{email}}",
+    "profile": "sdsa"
+  }
+}
+
 vars:pre-request {
   baseUrl: http://localhost:3000
-  email: "user@example.com"
-  name: "John Doe"
-  country: "United States"
+  email: user@example.com
+  name: ohn Doe
+  country: United States
 }
 
 vars:post-response {

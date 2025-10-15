@@ -2,6 +2,7 @@ import { z, ZodTypeAny } from 'zod';
 import {
   AuthCreateEmailRequestDTO,
   AuthCreateEmailResponseDTO,
+  OAuthCreateEmailRequestDTO,
 } from './DTO/auth/auth.dto.js';
 
 // --- TYPES ---
@@ -61,6 +62,20 @@ function defineRoute<
 // --- APP ROUTER ---
 export const AppRouter = {
   AUTH_MODULE: {
+    CREATE_WITH_OAUTH: defineRoute({
+      key: 'auth:create:withOauth2',
+      path: '/auth/google',
+      method: 'POST',
+      auth: [],
+      schemas: {
+        body: OAuthCreateEmailRequestDTO,
+        responses: {
+          201: OAuthCreateEmailRequestDTO,
+          400: ApiErrorSchema,
+        },
+      },
+    }),
+
     CREATE_WITH_EMAIL: defineRoute({
       key: 'auth:create:withEmail',
       path: '/auth/email',

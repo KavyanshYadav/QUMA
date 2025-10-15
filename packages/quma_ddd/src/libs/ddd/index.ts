@@ -4,3 +4,4 @@ export * from './command.base.js';
 export * from './command.bus.base.js';
 export * from './entity.base.js';
 export * from './domain-event.base.js';
+export * from './controller.base.js';

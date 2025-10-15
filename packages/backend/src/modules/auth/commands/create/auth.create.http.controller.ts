@@ -1,25 +1,41 @@
 import { injectable, inject } from 'tsyringe';
-import { Request, Response } from 'express';
-import { AuthEmailRequestDTO } from '@quma/types';
-import { Logger } from '@quma/ddd';
-import { MemoryBus } from '@quma/ddd';
+import { MemoryBus, BaseController } from '@quma/ddd';
 import { CreateAuthWithEmailCommand } from '../auth.createWithEmail.js';
+
+const key = 'AUTH_MODULE.CREATE_WITH_EMAIL';
+
 @injectable()
-export class CreateAuthHttpController {
-  constructor(@inject(MemoryBus) private readonly memoryBus: MemoryBus) {}
+export class CreateAuthHttpController extends BaseController<typeof key> {
+  constructor(@inject(MemoryBus) private readonly memoryBus: MemoryBus) {
+    super();
+  }
 
-  async handle(req: Request, res: Response) {
-    // const para =  CreateUserRequestSchema.parse(req.body);
-    const para = AuthEmailRequestDTO.parse(req.body);
-    Logger.info(JSON.stringify(para));
-    //const para = req.body;
-    await this.memoryBus.execute(
-      new CreateAuthWithEmailCommand({
-        email: para.email,
-        profile: para.profile,
-      })
-    );
+  protected override getRouterKey(): 'AUTH_MODULE.CREATE_WITH_EMAIL' {
+    return key;
+  }
 
-    res.send({ message: 'Auth created' });
+  protected override async execute(req: {
+    params: unknown;
+    query: unknown;
+    body: { email: string };
+  }): Promise<{ statusCode: 200 | 201; data: { message: string } }> {
+    {
+      // const para =  CreateUserRequestSchema.parse(req.body);
+      console.log(req);
+      //const para = req.body;
+      await this.memoryBus.execute(
+        new CreateAuthWithEmailCommand({
+          email: 'asdas@email.com',
+          profile: 'Asds',
+        })
+      );
+
+      return {
+        statusCode: 200,
+        data: {
+          message: 'auth created',
+        },
+      };
+    }
   }
 }
