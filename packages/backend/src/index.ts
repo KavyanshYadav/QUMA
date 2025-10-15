@@ -1,7 +1,8 @@
 import 'reflect-metadata';
-
-import dotEnv from 'dotenv';
-
+import 'dotenv/config'; // simp
+console.log('GOOGLE_CLIENT_ID:', process.env.GOOGLE_CLIENT_ID);
+console.log('GOOGLE_CLIENT_SECRET:', process.env.GOOGLE_CLIENT_SECRET);
+console.log();
 import { randomUUID } from 'crypto';
 import express from 'express';
 import passport from 'passport';
@@ -12,14 +13,15 @@ import { Logger } from '@quma/ddd';
 import { UserModule } from './modules/user/user.module.js';
 import { MemoryBus } from '@quma/ddd';
 import { container } from 'tsyringe';
-import path from 'path';
+import * as path from 'path';
 import { db, initDB } from './db/index.js';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import { AuthMoudle } from './modules/auth/auth.module.js';
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
-
-dotEnv.config();
-
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 initDB();
 
 const app = express();

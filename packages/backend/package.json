@@ -48,11 +48,6 @@
           "assets": [
             "packages/backend/src/assets"
           ],
-          "external": [
-            "@quma/types",
-            "@quma/ddd",
-            "@quma/config"
-          ],
           "esbuildOptions": {
             "sourcemap": true,
             "outExtension": {
@@ -77,13 +72,11 @@
         "outputs": [
           "{options.outputPath}"
         ],
-        "dependsOn": [
-          "^build"
-        ],
+        "dependsOn": [],
         "options": {
           "outputPath": "packages/backend/dist",
           "main": "packages/backend/src/index.ts",
-          "tsConfig": "packages/backend/tsconfig.app.json",
+          "tsConfig": "packages/backend/tsconfig.json",
           "assets": [
             "packages/backend/src/assets"
           ]
@@ -131,7 +124,7 @@
         "executor": "@nx/js:node",
         "defaultConfiguration": "development",
         "dependsOn": [
-          "build"
+          "^build"
         ],
         "options": {
           "buildTarget": "@quma/backend:build",

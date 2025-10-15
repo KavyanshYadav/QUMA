@@ -13,6 +13,7 @@ import { OAuthController } from './controllers/oauth.controller.js';
 import { googleStrategy } from './strategies/google.strategy.js';
 import { githubStrategy } from './strategies/github.strategy.js';
 import { AppRouter } from '@quma/config';
+
 export class AuthMoudle {
   public router: Router;
   private oauthController: OAuthController;

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { UserEntity } from './user.entity.js';
-import { UserRoles } from './user.types';
+import { UserRoles } from './user.types.js';
 import { UserCreatedDomainEvent } from './events/user-created-event.js';
 import { runInTestContext } from '../../../test-utils.js';
 

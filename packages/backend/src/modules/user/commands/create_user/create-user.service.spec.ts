@@ -16,7 +16,6 @@ vi.mock('@quma/ddd', async () => {
 
 import { CreateUserService } from './create-user.service.js';
 import { CreateUserCommand } from './create-user.command.js';
-import { UserPostGresRepo } from '../../database/user.postgres.repository.js';
 import { UserEntity } from '../../domain/user.entity.js';
 import { runInTestContext } from '../../../../test-utils.js';
 
