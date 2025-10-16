@@ -31,10 +31,15 @@ export abstract class BaseController<R extends { key: RouteKey }> {
   protected static ROUTE: { key: RouteKey };
 
   protected get routerKey(): R['key'] {
-    const route = (this.constructor as typeof BaseController & { ROUTE: R })
-      .ROUTE;
+    const route = (
+      this.constructor as typeof BaseController & { ROUTE: { key: string } }
+    ).ROUTE;
     if (!route?.key) throw new Error('ROUTE.key is not defined');
     return route.key;
+  }
+
+  protected async authorize(req: Request, res: Response) {
+    return;
   }
 
   protected abstract execute(

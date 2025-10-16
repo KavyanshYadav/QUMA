@@ -3,6 +3,7 @@ import { AsyncLocalStorage } from 'async_hooks';
 export interface AppRequestContext {
   requestId: string;
   transactionConnection?: unknown;
+  userId?: string;
 }
 
 const asyncLocalStorage = new AsyncLocalStorage<AppRequestContext>();
@@ -23,6 +24,11 @@ export class RequestContext {
     const ctx = asyncLocalStorage.getStore();
     if (!ctx) throw new Error('RequestContext not initialized!');
     return ctx;
+  }
+
+  static setUserId(userID: string): void {
+    const ctx = this.getContext();
+    ctx.userId = userID;
   }
 
   static setRequestId(id: string) {

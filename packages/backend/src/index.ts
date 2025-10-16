@@ -1,3 +1,4 @@
+/* eslint-disable @nx/enforce-module-boundaries */
 import 'reflect-metadata';
 import 'dotenv/config'; // simp
 console.log('GOOGLE_CLIENT_ID:', process.env.GOOGLE_CLIENT_ID);
@@ -18,11 +19,16 @@ import { db, initDB } from './db/index.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { AuthMoudle } from './modules/auth/auth.module.js';
+import { JWTService } from './modules/auth/services/jwt.service.js';
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 initDB();
+
+container.register(JWTService, {
+  useClass: JWTService,
+});
 
 const app = express();
 const AuthpublicPath = path.join(__dirname, 'public/authWeb');
@@ -30,6 +36,34 @@ const AuthpublicPath = path.join(__dirname, 'public/authWeb');
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(async (req, res, next) => {
+  const requestId = randomUUID();
+
+  RequestContext.runWithContext(
+    async () => {
+      RequestContext.setRequestId(requestId);
+      let authToken = req.headers?.authorization;
+      if (!authToken) {
+        authToken = '';
+        //return res.status(401).json({ message: 'Unauthorized' });
+      }
+      try {
+        const jwtService = container.resolve(JWTService);
+        const user = await jwtService.verifyToken(authToken);
+        RequestContext.setUserId(user.userId);
+        req.user = user;
+        next();
+        return;
+      } catch {
+        req.user = undefined;
+        next();
+        return;
+      }
+    },
+    { requestId }
+  );
+});
 
 // Session configuration for Passport
 app.use(
@@ -52,17 +86,6 @@ app.use('/web/auth', express.static(AuthpublicPath));
 
 app.get('/web/auth/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/authWeb', 'index.html'));
-});
-
-app.use((req, res, next) => {
-  const requestId = randomUUID();
-  RequestContext.runWithContext(
-    () => {
-      RequestContext.setRequestId(requestId);
-      next();
-    },
-    { requestId }
-  );
 });
 
 Logger.registerAdapter(new WinstonAdapter());

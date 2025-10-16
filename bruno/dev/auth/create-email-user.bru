@@ -13,11 +13,12 @@ post {
 headers {
   Accept: application/json
   Content-Type: application/json
+  Authorization: {{authHeader}}
 }
 
 body:json {
   {
-    "email": "{{email}}",
+    "email": "{{email}}"
     
   }
 }

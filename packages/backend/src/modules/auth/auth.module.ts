@@ -1,3 +1,4 @@
+/* eslint-disable @nx/enforce-module-boundaries */
 import { Router } from 'express';
 import { MemoryBus } from '@quma/ddd';
 import { container } from 'tsyringe';
@@ -8,7 +9,6 @@ import { CreateAuthWithOauthCommand } from './commands/auth.createWithOauth.js';
 import { CreateAuthHttpController } from './commands/create/auth.create.http.controller.js';
 import { CreateWithEmailService } from './commands/create/services/createWithEmailService.js';
 import { CreateWithOauthService } from './commands/create/services/createWithOauthService.js';
-import { JWTService } from './services/jwt.service.js';
 import { OAuthController } from './controllers/oauth.controller.js';
 import { googleStrategy } from './strategies/google.strategy.js';
 import { githubStrategy } from './strategies/github.strategy.js';
@@ -30,9 +30,7 @@ export class AuthMoudle {
     container.register(CreateWithOauthService, {
       useClass: CreateWithOauthService,
     });
-    container.register(JWTService, {
-      useClass: JWTService,
-    });
+
     container.register(CreateAuthHttpController, {
       useClass: CreateAuthHttpController,
     });
