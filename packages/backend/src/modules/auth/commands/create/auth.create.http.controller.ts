@@ -1,45 +1,42 @@
+/* eslint-disable @nx/enforce-module-boundaries */
 import { injectable, inject } from 'tsyringe';
-import { MemoryBus, BaseController } from '@quma/ddd';
+import {
+  MemoryBus,
+  BaseController,
+  ControllerRequest,
+  ControllerResponse,
+} from '@quma/ddd';
 import { CreateAuthWithEmailCommand } from '../auth.createWithEmail.js';
-
-const key = 'AUTH_MODULE.CREATE_WITH_OAUTH';
+import { AppRouter } from '@quma/config';
 
 @injectable()
-export class CreateAuthHttpController extends BaseController<typeof key> {
+export class CreateAuthHttpController extends BaseController<
+  typeof AppRouter.AUTH_MODULE.CREATE_WITH_EMAIL
+> {
+  ROUTE = AppRouter.AUTH_MODULE.CREATE_WITH_EMAIL;
+
   constructor(@inject(MemoryBus) private readonly memoryBus: MemoryBus) {
     super();
   }
+  protected override async execute(
+    req: ControllerRequest<typeof CreateAuthHttpController.ROUTE.key>
+  ): Promise<ControllerResponse<typeof CreateAuthHttpController.ROUTE.key>> {
+    // const para =  CreateUserRequestSchema.parse(req.body);
+    console.log(req);
+    //const para = req.body;
 
-  protected override getRouterKey(): 'AUTH_MODULE.CREATE_WITH_OAUTH' {
-    return key;
-  }
+    await this.memoryBus.execute(
+      new CreateAuthWithEmailCommand({
+        email: 'asdas@email.com',
+        profile: 'Asds',
+      })
+    );
 
-  protected override async execute(req: {
-    params: unknown;
-    query: unknown;
-    body: { email: string; providerKEY: number };
-  }): Promise<{
-    statusCode: 200 | 201;
-    data: { email: string; providerKEY: number };
-  }> {
-    {
-      // const para =  CreateUserRequestSchema.parse(req.body);
-      console.log(req);
-      //const para = req.body;
-      await this.memoryBus.execute(
-        new CreateAuthWithEmailCommand({
-          email: 'asdas@email.com',
-          profile: 'Asds',
-        })
-      );
-
-      return {
-        statusCode: 201,
-        data: {
-          email: 'dsd',
-          providerKEY: 123213,
-        },
-      };
-    }
+    return {
+      statusCode: 201,
+      data: {
+        message: 'User created successfully',
+      },
+    };
   }
 }

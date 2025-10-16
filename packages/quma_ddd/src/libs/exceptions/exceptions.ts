@@ -8,7 +8,7 @@ import {
   REQUEST_CONTEXT_NOT_INITIALIZED,
 } from './codes.js';
 import { ExceptionBase } from './execptions.base.js';
-
+import { ZodError } from 'zod';
 /**
  * Used to indicate that an incorrect argument was provided to a method/function/class constructor
  *
@@ -92,5 +92,14 @@ export class RequestContextErrorException extends ExceptionBase {
     super(message);
 
     this.code = ErrorCode;
+  }
+}
+
+export class ParamsValidationErorrException extends ExceptionBase {
+  readonly code = ARGUMENT_INVALID;
+  readonly zodErrors: ZodError;
+  constructor(zodError: ZodError) {
+    super('validation failed');
+    this.zodErrors = zodError;
   }
 }

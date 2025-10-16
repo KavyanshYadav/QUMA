@@ -4,39 +4,31 @@
     "declaration": true,
     "declarationMap": true,
     "emitDeclarationOnly": false,
-    "strict": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "target": "ES2022",
-    "lib": ["ES2022", "ESNext", "DOM"],
-    "esModuleInterop": false,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
+    "importHelpers": true,
+    "isolatedModules": true,
+    "lib": ["dom", "dom.iterable", "esnext", "es2022"],
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
+    "jsx": "react-jsx",
     "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true,
+    "jsxImportSource": "@emotion/react",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "strict": true,
+    "target": "es2022",
     "baseUrl": ".",
     "paths": {
       "@quma/config": ["packages/quma_config/src/index.ts"],
-      "@quma/ddd": ["packages/quma_ddd/src/index.ts"],
+      "@quma/ddd": ["packages/quma_ddd_base/src/index.ts"],
+      "@quma/ddd/*": ["packages/quma_ddd_base/src/*"],
       "@quma/types": ["packages/quma_types/src/index.ts"],
-      "@quma/webkit": ["packages/frontend_web_kit/dist"]
+      "@quma/webkit": ["packages/frontend_web_kit/src/index.ts"],
+      "@quma_types/*": ["packages/quma_types/src/*"]
     }
-  },
-  "include": ["packages/backend/src/**/*.ts"],
-  "references": [
-    {
-      "path": "packages/quma_ddd"
-    },
-    {
-      "path": "packages/quma_config"
-    },
-    {
-      "path": "packages/quma_types"
-    }
-  ]
+  }
 }

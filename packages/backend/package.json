@@ -15,7 +15,7 @@
         "options": {
           "commands": [
             "nx build @quma/quma_oauth_frontend_web",
-            "nx run @quma/backend:build:tsc",
+            "nx run @quma/backend:build:esbuild",
             "rimraf packages/backend/dist/apps/backend/public",
             "copyfiles --up 3 \"packages/quma_oauth_frontend_web/dist/**/*\" \"packages/backend/dist/public/authWeb\""
           ]
@@ -31,9 +31,7 @@
         "outputs": [
           "{options.outputPath}"
         ],
-        "dependsOn": [
-          "^build"
-        ],
+        "dependsOn": [],
         "defaultConfiguration": "production",
         "options": {
           "platform": "node",

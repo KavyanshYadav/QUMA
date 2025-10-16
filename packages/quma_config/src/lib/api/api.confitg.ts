@@ -3,6 +3,7 @@ import {
   AuthCreateEmailRequestDTO,
   AuthCreateEmailResponseDTO,
   OAuthCreateEmailRequestDTO,
+  OAuthCreateEmailResponseDTO,
 } from './DTO/auth/auth.dto.js';
 
 // --- TYPES ---
@@ -60,6 +61,7 @@ function defineRoute<
 }
 
 // --- APP ROUTER ---
+
 export const AppRouter = {
   AUTH_MODULE: {
     CREATE_WITH_OAUTH: defineRoute({
@@ -70,12 +72,11 @@ export const AppRouter = {
       schemas: {
         body: OAuthCreateEmailRequestDTO,
         responses: {
-          201: OAuthCreateEmailRequestDTO,
+          201: OAuthCreateEmailResponseDTO,
           400: ApiErrorSchema,
         },
       },
     }),
-
     CREATE_WITH_EMAIL: defineRoute({
       key: 'auth:create:withEmail',
       path: '/auth/email',
@@ -92,69 +93,71 @@ export const AppRouter = {
   },
 } as const;
 
-export function getRouteConfigFromKey(key: RouteKey) {
-  const parts = key.split('.');
-  let config: any = AppRouter;
-  for (const part of parts) {
-    if (config && typeof config === 'object' && part in config) {
-      config = config[part];
+// --- BUILD ROUTE KEY MAP ---
+type RouteConfigWithKey = ReturnType<typeof defineRoute>;
+const routeKeyMap: Record<string, RouteConfigWithKey> = {};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function populateRouteKeyMap(obj: any) {
+  for (const k in obj) {
+    if ('key' in obj[k]) {
+      routeKeyMap[obj[k].key] = obj[k];
     } else {
-      // This should ideally never happen if the RouteKey is correct
-      return null;
+      populateRouteKeyMap(obj[k]);
     }
   }
-  return config;
+}
+populateRouteKeyMap(AppRouter);
+
+export function getRouteConfigFromKey(key: RouteKey) {
+  return routeKeyMap[key] ?? null;
 }
 
-// --- ROUTE TYPE EXTRACTION LOGIC ---
+// --- ROUTE KEYS ---
+type ExtractRouteKeys<T> = T extends { key: infer K }
+  ? K
+  : T extends object
+  ? ExtractRouteKeys<T[keyof T]>
+  : never;
+export type RouteKey = ExtractRouteKeys<typeof AppRouter>;
 
-// Route key becomes a string path (e.g. "AUTH_MODULE.CREATE_WITH_EMAIL")
-type NestedKeyOf<T> = {
-  [K in keyof T & string]: T[K] extends { schemas: any }
-    ? K
-    : `${K}.${NestedKeyOf<T[K]>}`;
-}[keyof T & string];
-
-export type RouteKey = NestedKeyOf<typeof AppRouter>;
-
-type GetRouteConfig<K extends RouteKey> =
-  K extends `${infer Parent}.${infer Child}`
-    ? Parent extends keyof typeof AppRouter
-      ? Child extends keyof (typeof AppRouter)[Parent]
-        ? (typeof AppRouter)[Parent][Child]
-        : never
-      : never
-    : K extends keyof typeof AppRouter
-    ? (typeof AppRouter)[K]
-    : never;
+// --- GET ROUTE CONFIG TYPE ---
+type GetRouteConfig<K extends RouteKey> = K extends 'auth:create:withEmail'
+  ? typeof AppRouter.AUTH_MODULE.CREATE_WITH_EMAIL
+  : K extends 'auth:create:withOauth2'
+  ? typeof AppRouter.AUTH_MODULE.CREATE_WITH_OAUTH
+  : never;
 
 // --- TYPE HELPERS ---
-export type RouteBody<K extends RouteKey> = NonNullable<
-  GetRouteConfig<K>['schemas']['body']
-> extends ZodTypeAny
-  ? z.infer<NonNullable<GetRouteConfig<K>['schemas']['body']>>
-  : never;
+export type RouteBody<K extends RouteKey> =
+  GetRouteConfig<K>['schemas'] extends {
+    body: ZodTypeAny;
+  }
+    ? z.infer<GetRouteConfig<K>['schemas']['body']>
+    : Record<string, never>;
 
-export type RouteParams<K extends RouteKey> = NonNullable<
-  GetRouteConfig<K>['schemas']['params']
-> extends ZodTypeAny
-  ? z.infer<NonNullable<GetRouteConfig<K>['schemas']['params']>>
-  : never;
+export type RouteParams<K extends RouteKey> =
+  GetRouteConfig<K>['schemas'] extends {
+    params: ZodTypeAny;
+  }
+    ? z.infer<GetRouteConfig<K>['schemas']['params']>
+    : Record<string, never>;
 
-export type RouteQuery<K extends RouteKey> = NonNullable<
-  GetRouteConfig<K>['schemas']['query']
-> extends ZodTypeAny
-  ? z.infer<NonNullable<GetRouteConfig<K>['schemas']['query']>>
-  : never;
+export type RouteQuery<K extends RouteKey> =
+  GetRouteConfig<K>['schemas'] extends {
+    query: ZodTypeAny;
+  }
+    ? z.infer<GetRouteConfig<K>['schemas']['query']>
+    : Record<string, never>;
 
 type SuccessStatusCodes = 200 | 201;
-
 export type RouteSuccessResponse<K extends RouteKey> =
-  GetRouteConfig<K>['schemas']['responses'] extends Record<
-    infer Code,
-    ZodTypeAny
-  >
-    ? Code extends SuccessStatusCodes
-      ? z.infer<GetRouteConfig<K>['schemas']['responses'][Code]>
-      : never
+  GetRouteConfig<K>['schemas'] extends {
+    responses: Record<number, ZodTypeAny>;
+  }
+    ? {
+        [Code in keyof GetRouteConfig<K>['schemas']['responses']]: Code extends SuccessStatusCodes
+          ? z.infer<GetRouteConfig<K>['schemas']['responses'][Code]>
+          : never;
+      }[keyof GetRouteConfig<K>['schemas']['responses']]
     : never;

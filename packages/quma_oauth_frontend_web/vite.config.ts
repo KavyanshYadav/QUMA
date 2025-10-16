@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import tsconf from 'vite-tsconfig-paths';
+import tsconfigPaths from 'vite-tsconfig-paths';
 // import { AUTH_WEB_BASE_URL } from '../quma_config/src/index.js';
 
 export default defineConfig(() => ({
@@ -11,12 +11,15 @@ export default defineConfig(() => ({
     port: 4200,
     host: 'localhost',
   },
+  resolve: {
+    alias: {},
+  },
 
   preview: {
     port: 4200,
     host: 'localhost',
   },
-  plugins: [react(), tsconf({ root: '../../' })],
+  plugins: [react(), tsconfigPaths()],
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [ nxViteTsPaths() ],
