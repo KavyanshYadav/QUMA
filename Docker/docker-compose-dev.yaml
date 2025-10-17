@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  quma-backend:
+    build:
+      context: ..
+      dockerfile: packages/backend/Dockerfile
+    env_file:
+      - ../packages/backend/.env.dev
+    ports:
+      - '3000:3000'
+    volumes:
+      - ../packages/backend:/app/packages/backend
+      - ../libs:/app/libs
+      - /app/node_modules
+      - pnpm-store:/root/.pnpm-store
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
+    command: npx nx serve backend
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: quma-postgres
+    ports:
+      - '5432:5432'
+    env_file:
+      - ../packages/backend/.env.dev
+    environment:
+      POSTGRES_DB: quma_test
+      POSTGRES_USER: quma_user
+      POSTGRES_PASSWORD: quma_user
+    volumes:
+      - quma_data:/var/lib/postgresql/data
+      # - ../db/postgres/:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER}']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  quma_data:
+  pnpm-store:

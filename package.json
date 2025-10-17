@@ -115,6 +115,22 @@
           "config": ".verdaccio/config.yml",
           "storage": "tmp/local-registry/storage"
         }
+      },
+      "docker:backend": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": [
+            "docker build -t quma-backend -f packages/backend/Dockerfile ."
+          ]
+        }
+      },
+      "docker-compose-dev": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": [
+            "docker compose -f ./Docker/docker-compose-dev.yaml up --build"
+          ]
+        }
       }
     }
   }

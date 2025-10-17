@@ -1,0 +1,1 @@
+CREATE DATABASE quma_test;

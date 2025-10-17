@@ -21,6 +21,7 @@ import { dirname } from 'path';
 import { AuthMoudle } from './modules/auth/auth.module.js';
 import { JWTService } from './modules/auth/services/jwt.service.js';
 const host = process.env.HOST ?? 'localhost';
+
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

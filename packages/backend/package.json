@@ -26,6 +26,14 @@
           "^production"
         ]
       },
+      "docker-build-image": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": [
+            "docker build -t quma-backend -f ./Dockerfile ../../"
+          ]
+        }
+      },
       "build:esbuild": {
         "executor": "@nx/esbuild:esbuild",
         "outputs": [
@@ -40,7 +48,7 @@
           "format": [
             "esm"
           ],
-          "bundle": false,
+          "bundle": true,
           "main": "packages/backend/src/index.ts",
           "tsConfig": "packages/backend/tsconfig.app.json",
           "assets": [

@@ -1,0 +1,6 @@
+# .dockerignore
+node_modules/
+.git/
+*.log
+temp/
+!important_file.txt # Exclude all files except important_file.txt
