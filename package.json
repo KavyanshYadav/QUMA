@@ -131,6 +131,14 @@
             "docker compose -f ./Docker/docker-compose-dev.yaml up --build"
           ]
         }
+      },
+      "docker-compose-prod": {
+        "executor": "nx:run-commands",
+        "options": {
+          "commands": [
+            "docker compose -f ./Docker/docker-compose-prod.yaml up"
+          ]
+        }
       }
     }
   }

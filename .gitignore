@@ -7,6 +7,7 @@ dist
 tmp
 out-tsc
 docs
+.terraform
 
 # dependencies
 node_modules

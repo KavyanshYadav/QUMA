@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  localstack:
+    image: localstack/localstack:2.3
+    container_name: localstack-prod
+    ports:
+      - '4566:4566' # LocalStack main endpoint
+      - '4571:4571' # Legacy edge port
+    environment:
+      - SERVICES=s3,sqs,sns,dynamodb,ecs,rds
+      - DEBUG=1
+      - DATA_DIR=/var/lib/localstack/data
+      - LOCALSTACK_API_KEY=your_api_key # optional for pro features
+      - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+      - 'localstack-data:/var/lib/localstack'
+      - '/var/run/docker.sock:/var/run/docker.sock' # Needed for ECS tasks with local images
+
+volumes:
+  localstack-data:
