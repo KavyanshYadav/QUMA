@@ -26,6 +26,9 @@
     },
     {
       "path": "./packages/quma_ddd"
+    },
+    {
+      "path": "./packages/qumaconfigShared"
     }
   ]
 }

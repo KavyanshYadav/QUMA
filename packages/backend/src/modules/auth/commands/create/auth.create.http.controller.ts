@@ -26,6 +26,7 @@ export class CreateAuthHttpController extends BaseController<
     // const para =  CreateUserRequestSchema.parse(req.body);
 
     //const para = req.body;
+
     Logger.info('sad', RequestContext.getContext());
     await this.memoryBus.execute(
       new CreateAuthWithEmailCommand({

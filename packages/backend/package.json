@@ -16,6 +16,7 @@
           "commands": [
             "rimraf packages/backend/dist/",
             "tsc --build packages/backend",
+            "pnpm nx run @quma/quma_oauth_frontend_web:build",
             "copyfiles --up 3 \"packages/quma_oauth_frontend_web/dist/**/*\" \"packages/backend/dist/public/authWeb\""
           ]
         },

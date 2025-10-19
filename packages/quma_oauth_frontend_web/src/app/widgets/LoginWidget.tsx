@@ -1,8 +1,17 @@
 import { css } from '@emotion/react';
 import { Button, Input, useTheme } from '@quma/webkit';
 import React from 'react';
-
+import { FrontendAppRouter, RouteBody, RouteKey } from '@quma/configShared';
 const BtnCom = () => {
+  type ControllerRequest<K extends RouteKey> = {
+    body: RouteBody<K>;
+  };
+
+  const f: ControllerRequest<'auth:create:withEmail'> = {
+    body: {},
+  };
+
+  console.log(FrontendAppRouter);
   const theme = useTheme()?.theme;
   return (
     <Button

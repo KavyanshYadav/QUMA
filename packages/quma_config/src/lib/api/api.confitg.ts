@@ -162,3 +162,38 @@ export type RouteSuccessResponse<K extends RouteKey> =
           : never;
       }[keyof GetRouteConfig<K>['schemas']['responses']]
     : never;
+
+//Frontend
+
+function createFrontendRouter(router: typeof AppRouter) {
+  const result: any = {};
+
+  (Object.keys(router) as Array<keyof typeof router>).forEach((moduleKey) => {
+    result[moduleKey as string] = {};
+    const moduleObj = router[moduleKey] as unknown as Record<string, any>;
+    Object.keys(moduleObj).forEach((routeKey) => {
+      const route = moduleObj[routeKey];
+      result[moduleKey as string][routeKey] = {
+        key: route.key,
+        path: route.path,
+        method: route.method,
+        // empty schemas object for frontend type-safety
+        schemas: {
+          params: {},
+          query: {},
+          body: {},
+          response: {},
+        },
+      };
+    });
+  });
+
+  return result;
+}
+
+export const FrontendAppRouter = createFrontendRouter(AppRouter);
+
+// --- TYPES ---
+export type FrontendRouteKey = keyof typeof FrontendAppRouter.AUTH_MODULE;
+export type FrontendRoutePath<K extends FrontendRouteKey> =
+  (typeof FrontendAppRouter.AUTH_MODULE)[K]['path'];
