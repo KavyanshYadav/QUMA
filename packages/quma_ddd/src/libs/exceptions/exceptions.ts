@@ -74,9 +74,10 @@ export class NotFoundException extends ExceptionBase {
  */
 export class InternalServerErrorException extends ExceptionBase {
   static readonly message = 'Internal server error';
-
-  constructor(message = InternalServerErrorException.message) {
+  readonly Error: any;
+  constructor(message = InternalServerErrorException.message, Error: any) {
     super(message);
+    this.Error = Error;
   }
 
   readonly code = INTERNAL_SERVER_ERROR;

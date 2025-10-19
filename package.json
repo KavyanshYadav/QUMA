@@ -128,6 +128,14 @@
         "executor": "nx:run-commands",
         "options": {
           "command": [
+            "docker compose -f ./Docker/docker-compose-dev.yaml up"
+          ]
+        }
+      },
+      "docker-compose-dev:build": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": [
             "docker compose -f ./Docker/docker-compose-dev.yaml up --build"
           ]
         }

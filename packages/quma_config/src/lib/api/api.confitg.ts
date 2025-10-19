@@ -49,6 +49,7 @@ function defineRoute<
   path: string;
   method: HttpMethod;
   description?: string;
+  public?: boolean;
   auth: UserRole[];
   schemas: {
     params?: TParams;
@@ -94,7 +95,7 @@ export const AppRouter = {
 } as const;
 
 // --- BUILD ROUTE KEY MAP ---
-type RouteConfigWithKey = ReturnType<typeof defineRoute>;
+export type RouteConfigWithKey = ReturnType<typeof defineRoute>;
 const routeKeyMap: Record<string, RouteConfigWithKey> = {};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -14,9 +14,8 @@
         "cache": false,
         "options": {
           "commands": [
-            "nx build @quma/quma_oauth_frontend_web",
-            "nx run @quma/backend:build:esbuild",
-            "rimraf packages/backend/dist/apps/backend/public",
+            "rimraf packages/backend/dist/",
+            "tsc --build packages/backend",
             "copyfiles --up 3 \"packages/quma_oauth_frontend_web/dist/**/*\" \"packages/backend/dist/public/authWeb\""
           ]
         },
@@ -24,6 +23,18 @@
         "inputs": [
           "production",
           "^production"
+        ]
+      },
+      "database:migrate": {
+        "executor": "nx:run-commands",
+        "options": {
+          "commands": [
+            "pnpm drizzle-kit generate --config=packages/backend/dist/db/drizzle.config.js",
+            "pnpm drizzle-kit push --config=packages/backend/dist/db/drizzle.config.js"
+          ]
+        },
+        "dependsOn": [
+          "build"
         ]
       },
       "docker-build-image": {

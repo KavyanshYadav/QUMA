@@ -6,6 +6,7 @@ import {
   type RouteQuery,
   type RouteSuccessResponse,
   getRouteConfigFromKey,
+  RouteConfigWithKey,
 } from '@quma/config';
 
 import { Response, Request } from 'express';
@@ -15,6 +16,7 @@ import {
   InternalServerErrorException,
   ParamsValidationErorrException,
 } from '../exceptions/exceptions.js';
+import { RequestContext } from '../application/index.js';
 
 export type ControllerRequest<K extends RouteKey> = {
   params: RouteParams<K>;
@@ -38,7 +40,22 @@ export abstract class BaseController<R extends { key: RouteKey }> {
     return route.key;
   }
 
-  protected async authorize(req: Request, res: Response) {
+  protected async authorize(
+    req: Request,
+    res: Response,
+    routeConfig: RouteConfigWithKey
+  ) {
+    if (!routeConfig.public) {
+      try {
+        const userid = RequestContext.getContext().userId;
+        if (!userid) {
+          res.status(401);
+          return;
+        }
+      } catch (err) {
+        this.handleError(res, err);
+      }
+    }
     return;
   }
 
@@ -49,6 +66,9 @@ export abstract class BaseController<R extends { key: RouteKey }> {
   public async handle(req: Request, res: Response) {
     const routeConfig = getRouteConfigFromKey(this.routerKey);
     if (!routeConfig) throw new Error('Wrong routeConfig');
+
+    this.authorize(req, res, routeConfig);
+    if (res.headersSent) return;
 
     try {
       const validatedParams =
@@ -81,10 +101,11 @@ export abstract class BaseController<R extends { key: RouteKey }> {
     } else if (error instanceof ZodError) {
       domainError = new ParamsValidationErorrException(error);
     } else {
-      domainError = new InternalServerErrorException('Internal server error');
+      domainError = new InternalServerErrorException('', error);
     }
-
+    console.log(domainError);
     const status = this.mapErrorToStatus(domainError);
+
     return res.status(status).json(domainError.toJSON());
   }
 
