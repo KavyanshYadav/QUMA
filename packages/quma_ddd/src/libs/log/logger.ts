@@ -8,9 +8,14 @@ import { logBase, LogLevel } from './log.base.js';
 export class Logger {
   private static adapters: logBase[];
   private static enabled = true;
+  private static resource: Record<string, any> = {};
+
   static registerAdapter(adapter: logBase) {
     if (!Logger.adapters) Logger.adapters = [];
     Logger.adapters.push(adapter);
+  }
+  static setResource(resource: Record<string, any>) {
+    this.resource = resource;
   }
 
   private static enrichMeta(
