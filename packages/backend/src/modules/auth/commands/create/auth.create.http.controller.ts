@@ -3,10 +3,10 @@ import { injectable, inject } from 'tsyringe';
 import {
   MemoryBus,
   BaseController,
-  ControllerRequest,
-  ControllerResponse,
   Logger,
   RequestContext,
+  ControllerRequest,
+  ControllerResponse,
 } from '@quma/ddd';
 import { CreateAuthWithEmailCommand } from '../auth.createWithEmail.js';
 import { AppRouter } from '@quma/config';
@@ -21,11 +21,9 @@ export class CreateAuthHttpController extends BaseController<
     super();
   }
   protected override async execute(
-    req: ControllerRequest<typeof CreateAuthHttpController.ROUTE.key>
-  ): Promise<ControllerResponse<typeof CreateAuthHttpController.ROUTE.key>> {
-    // const para =  CreateUserRequestSchema.parse(req.body);
-
-    //const para = req.body;
+    req: ControllerRequest<'auth:create:withEmail'>
+  ): Promise<ControllerResponse<'auth:create:withEmail'>> {
+    // const para = req.body;
 
     Logger.info('sad', RequestContext.getContext());
     await this.memoryBus.execute(
@@ -35,7 +33,7 @@ export class CreateAuthHttpController extends BaseController<
       })
     );
     return {
-      statusCode: 201,
+      statusCode: 201 as const,
       data: {
         message: 'User created successfully',
       },

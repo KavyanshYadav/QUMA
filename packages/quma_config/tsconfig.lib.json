@@ -7,10 +7,11 @@
     "emitDeclarationOnly": false,
     "forceConsistentCasingInFileNames": true,
     "types": ["node"],
+    "strict": true,
     "composite": true,
     "declaration": true,
     "declarationMap": true
   },
   "include": ["src/**/*.ts"],
-  "references": [],
+  "references": []
 }

@@ -38,14 +38,15 @@ export function createResponseSchema(responses: Record<number, ZodTypeAny>) {
   return z.union(responseSchemas as [ZodTypeAny, ZodTypeAny, ...ZodTypeAny[]]);
 }
 
-// --- DEFINE ROUTE ---
+// --- SIMPLIFIED DEFINE ROUTE ---
 function defineRoute<
-  TParams extends ZodTypeAny,
-  TQuery extends ZodTypeAny,
-  TBody extends ZodTypeAny,
-  TResponses extends Record<number, ZodTypeAny>
+  const TKey extends string,
+  TParams extends ZodTypeAny | undefined = undefined,
+  TQuery extends ZodTypeAny | undefined = undefined,
+  TBody extends ZodTypeAny | undefined = undefined,
+  TResponses extends Record<number, ZodTypeAny> = Record<number, ZodTypeAny>
 >(config: {
-  key: string;
+  key: TKey;
   path: string;
   method: HttpMethod;
   description?: string;
@@ -61,139 +62,247 @@ function defineRoute<
   return config;
 }
 
-// --- APP ROUTER ---
+// --- SIMPLIFIED APP ROUTER (Flat structure) ---
+export const routes = {
+  'auth:create:withOauth2': defineRoute({
+    key: 'auth:create:withOauth2',
+    path: '/auth/google',
+    method: 'POST',
+    description: 'Create a new user with OAuth2',
+    auth: ['admin'],
+    schemas: {
+      body: OAuthCreateEmailRequestDTO,
+      responses: {
+        201: OAuthCreateEmailResponseDTO,
+        400: ApiErrorSchema,
+      },
+    },
+  }),
+  'auth:create:withEmail': defineRoute({
+    key: 'auth:create:withEmail',
+    path: '/auth/email',
+    method: 'POST',
+    auth: [],
+    schemas: {
+      body: AuthCreateEmailRequestDTO,
+      responses: {
+        201: AuthCreateEmailResponseDTO,
+        400: ApiErrorSchema,
+      },
+    },
+  }),
+  'auth:create:withPOP': defineRoute({
+    key: 'auth:create:withPOP',
+    path: '/auth/name',
+    method: 'POST',
+    auth: [],
+    schemas: {
+      body: AuthCreateEmailRequestDTO,
+      responses: {
+        201: AuthCreateEmailResponseDTO,
+        400: ApiErrorSchema,
+      },
+    },
+  }),
+} as const;
 
+// --- SIMPLE TYPE EXTRACTION ---
+export type RouteKey = keyof typeof routes;
+
+type GetRoute<K extends RouteKey> = (typeof routes)[K];
+
+// --- TYPE HELPERS (Now super simple!) ---
+export type RouteBody<K extends RouteKey> = GetRoute<K>['schemas'] extends {
+  body?: infer B;
+}
+  ? B extends ZodTypeAny
+    ? z.infer<B>
+    : never
+  : never;
+
+export type RouteParams<K extends RouteKey> = GetRoute<K>['schemas'] extends {
+  params?: infer P;
+}
+  ? P extends ZodTypeAny
+    ? z.infer<P>
+    : never
+  : never;
+
+export type RouteQuery<K extends RouteKey> = GetRoute<K>['schemas'] extends {
+  query?: infer Q;
+}
+  ? Q extends ZodTypeAny
+    ? z.infer<Q>
+    : never
+  : never;
+
+type SuccessStatusCodes = 200 | 201;
+export type RouteSuccessResponse<K extends RouteKey> = {
+  [Code in keyof GetRoute<K>['schemas']['responses']]: Code extends SuccessStatusCodes
+    ? GetRoute<K>['schemas']['responses'][Code] extends ZodTypeAny
+      ? z.infer<GetRoute<K>['schemas']['responses'][Code]>
+      : never
+    : never;
+}[keyof GetRoute<K>['schemas']['responses']];
+
+export type RouteResponse<
+  K extends RouteKey,
+  StatusCode extends keyof GetRoute<K>['schemas']['responses'] & number
+> = GetRoute<K>['schemas']['responses'][StatusCode] extends ZodTypeAny
+  ? z.infer<GetRoute<K>['schemas']['responses'][StatusCode]>
+  : never;
+
+export type RouteStatusCodes<K extends RouteKey> =
+  keyof GetRoute<K>['schemas']['responses'];
+
+export type RouteMethod<K extends RouteKey> = GetRoute<K>['method'];
+export type RoutePath<K extends RouteKey> = GetRoute<K>['path'];
+
+// --- RUNTIME ACCESS ---
+export function getRouteConfig<K extends RouteKey>(key: K) {
+  return routes[key];
+}
+
+export type RouteConfigWithKey = {
+  key: (typeof routes)[keyof typeof routes]['key'];
+  path: (typeof routes)[keyof typeof routes]['path'];
+  method: (typeof routes)[keyof typeof routes]['method'];
+  description?: string;
+  public?: boolean;
+  auth: UserRole[];
+  schemas: {
+    params?: ZodTypeAny;
+    query?: ZodTypeAny;
+    body?: ZodTypeAny;
+    responses: Record<number, ZodTypeAny>;
+  };
+};
+export function getRouteConfigFromKey<K extends RouteKey>(
+  key: K
+): RouteConfigWithKey {
+  const cfg = getRouteConfig(key);
+  return cfg as unknown as RouteConfigWithKey;
+}
+
+// --- GROUPING (if you need modules) ---
 export const AppRouter = {
   AUTH_MODULE: {
-    CREATE_WITH_OAUTH: defineRoute({
-      key: 'auth:create:withOauth2',
-      path: '/auth/google',
-      method: 'POST',
-      auth: [],
-      schemas: {
-        body: OAuthCreateEmailRequestDTO,
-        responses: {
-          201: OAuthCreateEmailResponseDTO,
-          400: ApiErrorSchema,
-        },
-      },
-    }),
-    CREATE_WITH_EMAIL: defineRoute({
-      key: 'auth:create:withEmail',
-      path: '/auth/email',
-      method: 'POST',
-      auth: [],
-      schemas: {
-        body: AuthCreateEmailRequestDTO,
-        responses: {
-          201: AuthCreateEmailResponseDTO,
-          400: ApiErrorSchema,
-        },
-      },
-    }),
+    CREATE_WITH_OAUTH: routes['auth:create:withOauth2'],
+    CREATE_WITH_EMAIL: routes['auth:create:withEmail'],
   },
 } as const;
 
-// --- BUILD ROUTE KEY MAP ---
-export type RouteConfigWithKey = ReturnType<typeof defineRoute>;
-const routeKeyMap: Record<string, RouteConfigWithKey> = {};
+// --- KEY-BASED LOOKUP (use underlying routes to preserve literal keys) ---
+type AppRoutes = (typeof routes)[keyof typeof routes];
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function populateRouteKeyMap(obj: any) {
-  for (const k in obj) {
-    if ('key' in obj[k]) {
-      routeKeyMap[obj[k].key] = obj[k];
-    } else {
-      populateRouteKeyMap(obj[k]);
-    }
-  }
-}
-populateRouteKeyMap(AppRouter);
+export type RouteByKey<K extends AppRoutes['key']> = Extract<
+  AppRoutes,
+  { key: K }
+>;
 
-export function getRouteConfigFromKey(key: RouteKey) {
-  return routeKeyMap[key] ?? null;
-}
-
-// --- ROUTE KEYS ---
-type ExtractRouteKeys<T> = T extends { key: infer K }
-  ? K
-  : T extends object
-  ? ExtractRouteKeys<T[keyof T]>
-  : never;
-export type RouteKey = ExtractRouteKeys<typeof AppRouter>;
-
-// --- GET ROUTE CONFIG TYPE ---
-type GetRouteConfig<K extends RouteKey> = K extends 'auth:create:withEmail'
-  ? typeof AppRouter.AUTH_MODULE.CREATE_WITH_EMAIL
-  : K extends 'auth:create:withOauth2'
-  ? typeof AppRouter.AUTH_MODULE.CREATE_WITH_OAUTH
-  : never;
-
-// --- TYPE HELPERS ---
-export type RouteBody<K extends RouteKey> =
-  GetRouteConfig<K>['schemas'] extends {
-    body: ZodTypeAny;
-  }
-    ? z.infer<GetRouteConfig<K>['schemas']['body']>
-    : Record<string, never>;
-
-export type RouteParams<K extends RouteKey> =
-  GetRouteConfig<K>['schemas'] extends {
-    params: ZodTypeAny;
-  }
-    ? z.infer<GetRouteConfig<K>['schemas']['params']>
-    : Record<string, never>;
-
-export type RouteQuery<K extends RouteKey> =
-  GetRouteConfig<K>['schemas'] extends {
-    query: ZodTypeAny;
-  }
-    ? z.infer<GetRouteConfig<K>['schemas']['query']>
-    : Record<string, never>;
-
-type SuccessStatusCodes = 200 | 201;
-export type RouteSuccessResponse<K extends RouteKey> =
-  GetRouteConfig<K>['schemas'] extends {
-    responses: Record<number, ZodTypeAny>;
-  }
-    ? {
-        [Code in keyof GetRouteConfig<K>['schemas']['responses']]: Code extends SuccessStatusCodes
-          ? z.infer<GetRouteConfig<K>['schemas']['responses'][Code]>
-          : never;
-      }[keyof GetRouteConfig<K>['schemas']['responses']]
+export type RouteRequestBodyByKey<K extends AppRoutes['key']> =
+  RouteByKey<K>['schemas'] extends { body?: infer B }
+    ? B extends ZodTypeAny
+      ? z.infer<B>
+      : never
     : never;
 
-//Frontend
+export type RouteResponseByStatusByKey<
+  K extends AppRoutes['key'],
+  StatusCode extends number
+> = RouteByKey<K>['schemas'] extends { responses: Record<number, ZodTypeAny> }
+  ? RouteByKey<K>['schemas']['responses'][StatusCode] extends ZodTypeAny
+    ? z.infer<RouteByKey<K>['schemas']['responses'][StatusCode]>
+    : never
+  : never;
 
-function createFrontendRouter(router: typeof AppRouter) {
-  const result: any = {};
+type SuccessStatusCodesFromRoute<R> = Extract<keyof R, 200 | 201>;
 
-  (Object.keys(router) as Array<keyof typeof router>).forEach((moduleKey) => {
-    result[moduleKey as string] = {};
-    const moduleObj = router[moduleKey] as unknown as Record<string, any>;
-    Object.keys(moduleObj).forEach((routeKey) => {
-      const route = moduleObj[routeKey];
-      result[moduleKey as string][routeKey] = {
-        key: route.key,
-        path: route.path,
-        method: route.method,
-        // empty schemas object for frontend type-safety
-        schemas: {
-          params: {},
-          query: {},
-          body: {},
-          response: {},
-        },
-      };
-    });
-  });
+export type RouteSuccessResponseByKey<K extends AppRoutes['key']> =
+  RouteByKey<K>['schemas'] extends {
+    responses: infer R;
+  }
+    ? SuccessStatusCodesFromRoute<R> extends infer C
+      ? C extends number
+        ? R extends Record<number, ZodTypeAny>
+          ? R[C] extends ZodTypeAny
+            ? z.infer<R[C]>
+            : never
+          : never
+        : never
+      : never
+    : never;
+
+// --- FRONTEND ROUTER ---
+function createFrontendRouter<
+  T extends Record<string, ReturnType<typeof defineRoute>>
+>(routes: T) {
+  const result = {} as {
+    [K in keyof T]: Pick<T[K], 'key' | 'path' | 'method'>;
+  };
+
+  for (const key in routes) {
+    const k = key as keyof T;
+    const route = routes[k];
+    result[k] = {
+      key: route.key,
+      path: route.path,
+      method: route.method,
+    } as Pick<T[typeof k], 'key' | 'path' | 'method'>;
+  }
 
   return result;
 }
 
-export const FrontendAppRouter = createFrontendRouter(AppRouter);
+export const FrontendRoutes = createFrontendRouter(routes);
 
-// --- TYPES ---
-export type FrontendRouteKey = keyof typeof FrontendAppRouter.AUTH_MODULE;
-export type FrontendRoutePath<K extends FrontendRouteKey> =
-  (typeof FrontendAppRouter.AUTH_MODULE)[K]['path'];
+// --- TYPE TESTS ---
+// Uncomment to verify types work correctly:
+
+//type _TestKeys = RouteKey;
+// Result: "auth:create:withOauth2" | "auth:create:withEmail"
+
+// type _TestEmailBody = RouteRequestBodyByKey<'auth:create:withEmail'>;
+// Result: z.infer<typeof AuthCreateEmailRequestDTO>
+
+//type _TestEmailSuccess = RouteBody<'auth:create:withOauth2'>;
+// Result: z.infer<typeof AuthCreateEmailResponseDTO>
+
+// type _TestEmailError = RouteResponse<'auth:create:withEmail', 400>;
+// Result: z.infer<typeof ApiErrorSchema>
+
+// type _TestMethod = RouteMethod<'auth:create:withEmail'>;
+// Result: "POST"
+
+// type _TestPath = RoutePath<'auth:create:withEmail'>;
+// Result: "/auth/email"
+
+// --- USAGE EXAMPLE ---
+// Type-safe API client
+// async function apiCall<K extends RouteKey>(
+//   key: K,
+//   body: RouteBody<K>
+// ): Promise<RouteSuccessResponse<K>> {
+//   const route = getRouteConfig(key);
+//
+//   const response = await fetch(route.path, {
+//     method: route.method,
+//     headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify(body),
+//   });
+//
+//   return response.json();
+// }
+
+// Usage with full type safety:
+// const result = await apiCall('auth:create:withEmail', {
+//   email: 'test@example.com',
+//   password: 'password123'
+// });
+// result is typed as AuthCreateEmailResponseDTO
+
+// This will error - wrong body type:
+// apiCall('auth:create:withEmail', { oauthToken: 'token' });
+
+// This will error - invalid route key:
+// apiCall('invalid:key', {});

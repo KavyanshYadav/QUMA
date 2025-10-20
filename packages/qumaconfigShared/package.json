@@ -5,20 +5,42 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
+  "nx": {
+  "targets": {
+    "generate-routes": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm exec node --loader ts-node/esm scripts/generate-frontend-routes.ts"
+      },
+      "outputs": [],   
+      "dependsOn": []
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "pnpm tsc --build packages/qumaconfigShared"
+        ]
+      },
+      "dependsOn": ["generate-routes"]
     }
   },
-  "files": [
-    "dist",
-    "!**/*.tsbuildinfo"
-  ],
-  "dependencies": {
-    "tslib": "^2.3.0",
-    "@quma/config": "workspace:"
+ 
+    "exports": {
+      "./package.json": "./package.json",
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "default": "./dist/index.js"
+      }
+    },
+    "files": [
+      "dist",
+      "!**/*.tsbuildinfo"
+    ],
+    "dependencies": {
+      "tslib": "^2.3.0",
+      "@quma/config": "workspace:"
+    }
   }
 }

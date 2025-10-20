@@ -1,22 +1,31 @@
 import { css } from '@emotion/react';
 import { Button, Input, useTheme } from '@quma/webkit';
 import React from 'react';
-import { FrontendAppRouter, RouteBody, RouteKey } from '@quma/configShared';
+import { RouteBody, RouteKey, FrontendRoutes } from '@quma/configShared';
+import { ApiClient } from './utilis';
 const BtnCom = () => {
   type ControllerRequest<K extends RouteKey> = {
     body: RouteBody<K>;
   };
 
-  const f: ControllerRequest<'auth:create:withEmail'> = {
-    body: {},
+  const api = new ApiClient('');
+  function callAPi() {
+    api.call('auth:create:withEmail', {
+      body: {
+        email: 'asdasd',
+      },
+    });
+  }
+  const st: RouteBody<'auth:create:withPOP'> = {
+    email: 'kavyanshy22@gmail.com',
   };
 
-  console.log(FrontendAppRouter);
+  console.log(FrontendRoutes);
   const theme = useTheme()?.theme;
   return (
     <Button
       onClick={() => {
-        window.open('', windowName, windowFeatures);
+        callAPi();
       }}
       iconLeft={<span>asdasd</span>}
       label="Google"
@@ -37,6 +46,20 @@ const BtnCom = () => {
 
 function LoginWidget() {
   const theme = useTheme()?.theme;
+  const api = new ApiClient('');
+  function callAPi(email: string) {
+    api.call('auth:create:withEmail', {
+      body: {
+        email: email,
+      },
+    });
+  }
+  const ref = React.useRef(null);
+  const handleClick = () => {
+    if (ref.current) {
+      callAPi(ref.current?.value);
+    }
+  };
 
   return (
     <div
@@ -143,9 +166,11 @@ function LoginWidget() {
             }
           `}
           label="Enter your email"
+          ref={ref}
         />
         <Button
-          label="Continue"
+          onClick={() => handleClick()}
+          label="Continue1"
           sx={css`
             margin-top: 1rem;
             background-color: black;

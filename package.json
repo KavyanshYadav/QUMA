@@ -2,6 +2,7 @@
   "name": "@quma/source",
   "version": "0.0.0",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "docs": "typedoc"
   },
@@ -108,6 +109,7 @@
   "nx": {
     "includedScripts": [],
     "targets": {
+      "generate:frontendRouteConfig": {},
       "local-registry": {
         "executor": "@nx/js:verdaccio",
         "options": {

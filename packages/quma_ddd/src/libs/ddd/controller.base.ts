@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
 import {
   type RouteKey,
   type RouteBody,
@@ -58,6 +57,9 @@ export abstract class BaseController<R extends { key: RouteKey }> {
     }
     return;
   }
+
+  // Subclasses implement business logic here without specifying types explicitly.
+  // Contextual typing enforces (req) and return to match the route key.
 
   protected abstract execute(
     req: ControllerRequest<R['key']>
