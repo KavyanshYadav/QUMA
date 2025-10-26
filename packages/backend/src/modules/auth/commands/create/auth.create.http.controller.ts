@@ -25,6 +25,11 @@ export class CreateAuthHttpController extends BaseController<
   ): Promise<ControllerResponse<'auth:create:withEmail'>> {
     // const para = req.body;
 
+    const traceId = RequestContext.getTraceId();
+    const requestId = RequestContext.getRequestId();
+
+    Logger.info('Creating order', { traceId, requestId });
+
     Logger.info('sad', RequestContext.getContext());
     await this.memoryBus.execute(
       new CreateAuthWithEmailCommand({
