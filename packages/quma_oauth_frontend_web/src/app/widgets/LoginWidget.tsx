@@ -15,6 +15,13 @@ const BtnCom = () => {
         email: 'asdasd',
       },
     });
+
+    api.call('auth:create:withOauth2', {
+      body: {
+        email: 'dsds@email.com',
+        providerKEY: 230230,
+      },
+    });
   }
   const st: RouteBody<'auth:create:withPOP'> = {
     email: 'kavyanshy22@gmail.com',

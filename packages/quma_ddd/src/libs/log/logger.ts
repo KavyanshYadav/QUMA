@@ -50,6 +50,10 @@ export class Logger {
     this.enabled = false;
   }
 
+  static getResource() {
+    return this.resource;
+  }
+
   static getAdapters(): logBase[] {
     return this.adapters;
   }
