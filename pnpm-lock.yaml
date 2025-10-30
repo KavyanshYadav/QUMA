@@ -329,6 +329,15 @@ importers:
 
   packages/frontend_web_kit: {}
 
+  packages/microService_event:
+    dependencies:
+      '@quma/ddd':
+        specifier: workspace:*
+        version: link:../quma_ddd
+      express:
+        specifier: ^4.21.2
+        version: 4.21.2
+
   packages/quma_config:
     dependencies:
       tslib:

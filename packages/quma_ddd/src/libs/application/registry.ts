@@ -3,9 +3,11 @@ import 'dotenv/config';
 
 export class Serviceregitry {
   private consul;
-  private ttl: number;
+  private _ttl: number;
 
   constructor(ttl = 15) {
+    this._ttl = ttl;
+    console.log(this._ttl);
     this.consul = new consul({
       host: process.env.CONSUL_HOST || '127.0.0.1',
       port: Number(process.env.CONSUL_PORT) || 8500,
@@ -31,8 +33,8 @@ export class Serviceregitry {
     for (const cmd of commands) {
       const key = `commands/${cmd}/${instanceId}`;
       const value = await this.consul.kv.get(key);
-      if (value) {
-        await this.consul.kv.set(key, value.Value, { ttl: `${this.ttl}s` });
+      if (value && value.Value != null) {
+        await this.consul.kv.set(key, value.Value as string);
       }
     }
   }

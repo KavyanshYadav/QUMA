@@ -32,6 +32,9 @@
     },
     {
       "path": "./packages/microService_event/"
+    },
+    {
+      "path": "./packages/microService_event"
     }
   ]
 }

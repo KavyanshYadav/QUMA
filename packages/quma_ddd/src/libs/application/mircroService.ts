@@ -1,0 +1,65 @@
+import express from 'express';
+import { Serviceregitry } from './registry.js';
+import { container } from 'tsyringe';
+import { Command } from '../ddd/command.base.js';
+import { MemoryBus } from '../utils/index.js';
+import { Module } from './module.js';
+
+export class MicroService {
+  private app = express();
+  private registry = new Serviceregitry();
+  private instanceId: string;
+  private modules: Module[] = [];
+  private host = process.env.HOST || 'localhost';
+  private port = Number(process.env.PORT) || 3000;
+  private readonly commands = new Map<
+    new (...args: any[]) => Command,
+    string // command -> module name
+  >();
+  constructor(instanceId?: string) {
+    this.instanceId =
+      process.env.INSTANCE_ID || instanceId || 'notDefinedShouldTermiate';
+    container.registerInstance(Serviceregitry, this.registry);
+    container.registerInstance(MemoryBus, new MemoryBus(this.registry));
+  }
+
+  registerModule(Module: Module) {
+    this.modules.push(Module);
+  }
+
+  async run(port: number | undefined = Number(process.env.PORT)) {
+    const commandBus = container.resolve(MemoryBus);
+
+    for (const module of this.modules) {
+      await module.init();
+
+      // Mount routes
+      this.app.use(module.getRouter());
+
+      // Register commands from module
+      for (const [commandClass, handler] of module.getCommands()) {
+        commandBus.registerHandler(commandClass, handler);
+        this.commands.set(commandClass, module.constructor.name);
+      }
+    }
+
+    for (const module of this.modules) {
+      await module.init();
+      this.app.use(module.getRouter());
+    }
+    // await this.registry.registerService(
+    //   this.instanceId,
+    //   this.host,
+    //   port || this.port,
+    //   Object.keys(this.commands)
+    // );
+
+    this.app.listen(port, () => {
+      console.log(
+        `🟢 Microservice ${this.host} ${this.instanceId} running on port ${
+          port || this.port
+        }`
+      );
+    });
+  }
+}

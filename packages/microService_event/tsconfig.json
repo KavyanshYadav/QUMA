@@ -4,6 +4,9 @@
   "include": [],
   "references": [
     {
+      "path": "../quma_ddd"
+    },
+    {
       "path": "./tsconfig.app.json"
     }
   ]

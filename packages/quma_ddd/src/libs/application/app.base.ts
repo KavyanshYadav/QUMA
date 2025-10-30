@@ -1,8 +1,6 @@
 // core/app.ts
 import express, { Express, RequestHandler } from 'express';
-import { container } from 'tsyringe';
 import { Logger } from '../log/logger.js';
-import { MemoryBus, WinstonAdapter } from '../utils/index.js';
 
 export interface Module {
   name?: string;
@@ -42,8 +40,7 @@ export class AppBuilder {
     this.app.use(express.urlencoded({ extended: true }));
 
     // Shared infrastructure
-    Logger.registerAdapter(new WinstonAdapter());
-    container.registerInstance(MemoryBus, new MemoryBus());
+    // container.registerInstance(MemoryBus, new MemoryBus());
   }
 
   /** apply custom middlewares */

@@ -110,7 +110,7 @@ export const routes = {
 export type RouteKey = keyof typeof routes;
 
 type GetRoute<K extends RouteKey> = (typeof routes)[K];
-const f: GetRoute<'auth:create:withEmail'>['schemas']['body'];
+//const f: GetRoute<'auth:create:withEmail'>['schemas']['body'];
 // --- TYPE HELPERS (Now super simple!) ---
 export type RouteBody<K extends RouteKey> = GetRoute<K>['schemas'] extends {
   body?: infer B;
