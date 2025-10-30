@@ -1,0 +1,6 @@
+go 1.25.1
+
+use(
+    ./packages/go_api_gateway
+    ./packages/quma_go_ddd
+)
