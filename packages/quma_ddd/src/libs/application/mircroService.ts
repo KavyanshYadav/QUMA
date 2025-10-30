@@ -76,6 +76,10 @@ export class MicroService {
         console.log('running a service');
       });
 
+    this.app.get('/health', (req, res) => {
+      res.status(200).json({ status: 'ok', uptime: process.uptime() });
+    });
+
     this.app.listen(port, () => {
       console.log(
         `🟢 Microservice ${this.host} ${this.instanceId} running on port ${
