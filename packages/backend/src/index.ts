@@ -8,7 +8,7 @@ import { randomUUID } from 'crypto';
 import express from 'express';
 import passport from 'passport';
 import session from 'express-session';
-import { RequestContext } from '@quma/ddd';
+import { RequestContext, Serviceregitry } from '@quma/ddd';
 import { WinstonAdapter } from '@quma/ddd';
 import { Logger } from '@quma/ddd';
 import { UserModule } from './modules/user/user.module.js';
@@ -90,7 +90,9 @@ app.get('/web/auth/*', (req, res) => {
 });
 
 Logger.registerAdapter(new WinstonAdapter());
-const memoryBus = new MemoryBus();
+const ServiceRegitry = new Serviceregitry();
+
+const memoryBus = new MemoryBus(ServiceRegitry);
 container.registerInstance(MemoryBus, memoryBus);
 
 container.register('DrizzleDBinstance', {
