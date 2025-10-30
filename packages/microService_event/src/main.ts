@@ -1,16 +1,65 @@
-import express from 'express';
+import 'reflect-metadata';
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import {} from '@quma/ddd';
+import {
+  AggregateID,
+  AggregateRoot,
+  Command,
+  CommandHandler,
+  MicroService,
+  Module,
+} from '@quma/ddd';
+import { setTimeout } from 'node:timers/promises';
+import { container } from 'tsyringe';
 
-const host = process.env.HOST ?? 'localhost';
-const port = process.env.PORT ? Number(process.env.PORT) : 3000;
+class getUserCommand extends Command {
+  readonly name: string;
+  constructor(name: string, props: any) {
+    super(props);
+    this.name = name;
+  }
+}
 
-const app = express();
+export class IdentityEntity extends AggregateRoot<{ name: string }> {
+  protected override readonly _id!: AggregateID;
+  public override validate(): void {
+    return;
+  }
+}
 
-app.get('/', (req, res) => {
-  res.send({ message: 'Hello API' });
-});
+class getUserCommandService
+  implements CommandHandler<getUserCommand, IdentityEntity>
+{
+  async execute(command: getUserCommand): Promise<IdentityEntity> {
+    return await setTimeout(
+      2000,
+      new IdentityEntity({
+        id: '1223231',
+        props: { name: 'adsa' },
+      })
+    );
+  }
+}
 
-app.listen(port, host, () => {
-  console.log(`[ ready ] http://${host}:${port}`);
-});
+class EventModule extends Module {
+  constructor() {
+    super();
+  }
+
+  override init(): void {
+    this.registerCommand(getUserCommand, new getUserCommandService());
+
+    this.Router.get('/command/getUserCommand', async (req, res) => {
+      await container.resolve(getUserCommandService).execute(
+        new getUserCommand('amed', {
+          name: 'ssd',
+        })
+      );
+      res.send('name');
+    });
+  }
+}
+
+const app = new MicroService('event');
+app.registerModule(new EventModule());
+
+app.run(7011);

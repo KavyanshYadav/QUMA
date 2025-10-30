@@ -3,7 +3,7 @@ import { Command } from '../ddd/command.base.js';
 import { CommandHandler } from '../ddd/command.bus.base.js';
 
 export abstract class Module {
-  private Router: Router;
+  protected Router: Router;
 
   protected readonly commands = new Map<
     new (...args: any[]) => Command,

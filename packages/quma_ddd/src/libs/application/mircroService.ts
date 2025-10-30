@@ -4,6 +4,8 @@ import { container } from 'tsyringe';
 import { Command } from '../ddd/command.base.js';
 import { MemoryBus } from '../utils/index.js';
 import { Module } from './module.js';
+import { randomUUID } from 'crypto';
+import { RequestContext } from './context/AppRequestContex.js';
 
 export class MicroService {
   private app = express();
@@ -27,7 +29,23 @@ export class MicroService {
     this.modules.push(Module);
   }
 
+  requestContextInit() {
+    this.app.use(async (req, res, next) => {
+      const requestId = randomUUID();
+
+      RequestContext.runWithContext(
+        async () => {
+          RequestContext.setRequestId(requestId);
+          next();
+        },
+        { requestId }
+      );
+    });
+  }
+
   async run(port: number | undefined = Number(process.env.PORT)) {
+    this.requestContextInit();
+
     const commandBus = container.resolve(MemoryBus);
 
     for (const module of this.modules) {
@@ -39,20 +57,21 @@ export class MicroService {
       // Register commands from module
       for (const [commandClass, handler] of module.getCommands()) {
         commandBus.registerHandler(commandClass, handler);
+        console.log(commandClass, handler);
         this.commands.set(commandClass, module.constructor.name);
       }
     }
-
-    for (const module of this.modules) {
-      await module.init();
-      this.app.use(module.getRouter());
-    }
-    // await this.registry.registerService(
-    //   this.instanceId,
-    //   this.host,
-    //   port || this.port,
-    //   Object.keys(this.commands)
-    // );
+    await this.registry
+      .registerService(
+        this.instanceId,
+        this.host,
+        port || this.port,
+        Array.from(this.commands.keys()).map((cmd) => cmd.name)
+      )
+      .then(() => {
+        console.log(this.commands);
+        console.log('running a service');
+      });
 
     this.app.listen(port, () => {
       console.log(
