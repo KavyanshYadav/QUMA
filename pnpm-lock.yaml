@@ -338,6 +338,12 @@ importers:
         specifier: ^4.21.2
         version: 4.21.2
 
+  packages/microservice_tickets:
+    dependencies:
+      '@quma/ddd':
+        specifier: workspace:*
+        version: link:../quma_ddd
+
   packages/quma_config:
     dependencies:
       tslib:

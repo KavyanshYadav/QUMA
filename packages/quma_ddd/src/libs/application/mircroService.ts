@@ -1,15 +1,14 @@
 import express from 'express';
-import { Serviceregitry } from './registry.js';
+import { ServiceRegistry } from './registry.js';
 import { container } from 'tsyringe';
 import { Command } from '../ddd/command.base.js';
 import { MemoryBus } from '../utils/index.js';
 import { Module } from './module.js';
 import { randomUUID } from 'crypto';
 import { RequestContext } from './context/AppRequestContex.js';
-
 export class MicroService {
   private app = express();
-  private registry = new Serviceregitry();
+  private registry = new ServiceRegistry();
   private instanceId: string;
   private modules: Module[] = [];
   private host = process.env.HOST || 'localhost';
@@ -21,7 +20,7 @@ export class MicroService {
   constructor(instanceId?: string) {
     this.instanceId =
       process.env.INSTANCE_ID || instanceId || 'notDefinedShouldTermiate';
-    container.registerInstance(Serviceregitry, this.registry);
+    container.registerInstance(ServiceRegistry, this.registry);
     container.registerInstance(MemoryBus, new MemoryBus(this.registry));
   }
 
@@ -47,6 +46,10 @@ export class MicroService {
     this.requestContextInit();
 
     const commandBus = container.resolve(MemoryBus);
+
+    setInterval(() => {
+      this.registry.heartbeat();
+    }, 7000);
 
     for (const module of this.modules) {
       await module.init();

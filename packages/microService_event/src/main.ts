@@ -48,7 +48,7 @@ class EventModule extends Module {
   override init(): void {
     this.registerCommand(getUserCommand, new getUserCommandService());
 
-    this.Router.get('/command/getUserCommand', async (req, res) => {
+    this.Router.get('/commands/getUserCommand', async (req, res) => {
       await container.resolve(getUserCommandService).execute(
         new getUserCommand('amed', {
           name: 'ssd',

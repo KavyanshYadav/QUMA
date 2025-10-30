@@ -35,6 +35,9 @@
     },
     {
       "path": "./packages/microService_event"
+    },
+    {
+      "path": "./packages/microservice_tickets"
     }
   ]
 }

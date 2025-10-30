@@ -1,9 +1,9 @@
-import { Serviceregitry } from '../../application/registry.js';
+import { ServiceRegistry } from '../../application/registry.js';
 import { Command } from '../../ddd/command.base.js';
 import { CommandBusBase, CommandHandler } from '../../ddd/command.bus.base.js';
 
 export class MemoryBus extends CommandBusBase {
-  constructor(private registry: Serviceregitry) {
+  constructor(private registry: ServiceRegistry) {
     super();
   }
 
@@ -32,6 +32,7 @@ export class MemoryBus extends CommandBusBase {
       console.log(
         `[CommandBus] Sending ${command.constructor.name} → ${instance.instanceId}`
       );
+      console.log(url);
       const res = await fetch(url, {
         method: 'POST',
         body: JSON.stringify(command),
