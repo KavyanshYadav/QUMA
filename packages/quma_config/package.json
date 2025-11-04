@@ -18,6 +18,13 @@
           "command": "node ./scripts/generateConfigFromOpenapi.js",
           "cwd": "packages/quma_config"
         }
+      },
+      "generate-JSONOpenApiRoutes": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node ./scripts/generateJSONFromOpenApi.js",
+          "cwd": "packages/quma_config"
+        }
       }
     }
   },
