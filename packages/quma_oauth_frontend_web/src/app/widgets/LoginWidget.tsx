@@ -10,7 +10,7 @@ const BtnCom = () => {
 
   const api = new ApiClient('');
   function callAPi() {
-    api.call('auth:create:withEmail', {
+    api.call('', {
       body: {
         email: 'asdasd',
       },

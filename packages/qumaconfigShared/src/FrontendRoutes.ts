@@ -4,12 +4,12 @@ export const FrontendRoutes = {
     "path": "/auth/google",
     "method": "POST"
   },
-  "auth:create:withEmail": {
-    "path": "/auth/email",
+  "auth:create:withGithubOauth2": {
+    "path": "/auth/github",
     "method": "POST"
   },
-  "auth:create:withPOP": {
-    "path": "/auth/name",
+  "auth:create:withEmail": {
+    "path": "/auth/email",
     "method": "POST"
   }
 } as const;

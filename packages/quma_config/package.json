@@ -5,6 +5,29 @@
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "nx": {
+    "targets": {
+      "build": {
+        "dependsOn": [
+          "generate-OpenApiRoutes"
+        ]
+      },
+      "generate-OpenApiRoutes": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node ./scripts/generateConfigFromOpenapi.js",
+          "cwd": "packages/quma_config"
+        }
+      },
+      "generate-JSONOpenApiRoutes": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node ./scripts/generateJSONFromOpenApi.js",
+          "cwd": "packages/quma_config"
+        }
+      }
+    }
+  },
   "exports": {
     "./package.json": "./package.json",
     ".": {

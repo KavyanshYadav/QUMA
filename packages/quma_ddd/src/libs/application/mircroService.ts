@@ -13,13 +13,15 @@ export class MicroService {
   private modules: Module[] = [];
   private host = process.env.HOST || 'localhost';
   private port = Number(process.env.PORT) || 3000;
+  private serviceType: string;
   private readonly commands = new Map<
     new (...args: any[]) => Command,
     string // command -> module name
   >();
   constructor(instanceId?: string) {
-    this.instanceId =
+    this.serviceType =
       process.env.INSTANCE_ID || instanceId || 'notDefinedShouldTermiate';
+    this.instanceId = randomUUID();
     container.registerInstance(ServiceRegistry, this.registry);
     container.registerInstance(MemoryBus, new MemoryBus(this.registry));
   }
@@ -67,6 +69,7 @@ export class MicroService {
     await this.registry
       .registerService(
         this.instanceId,
+        this.serviceType,
         this.host,
         port || this.port,
         Array.from(this.commands.keys()).map((cmd) => cmd.name)

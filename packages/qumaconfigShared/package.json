@@ -10,10 +10,10 @@
       "generate-routes": {
         "executor": "nx:run-commands",
         "options": {
-          "command": "pnpm exec node --loader ts-node/esm scripts/generate-frontend-routes.ts"
+          "command": "pnpm exec node ./scripts/generate-frontend-routes.js",
+          "cwd": "packages/qumaconfigShared"
         },
-        "outputs": [],
-        "dependsOn": []
+        "outputs": []
       },
       "build": {
         "executor": "nx:run-commands",

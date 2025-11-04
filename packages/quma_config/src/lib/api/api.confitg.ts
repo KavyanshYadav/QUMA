@@ -1,14 +1,7 @@
 import { z, ZodTypeAny } from 'zod';
-import {
-  AuthCreateEmailRequestDTO,
-  AuthCreateEmailResponseDTO,
-  OAuthCreateEmailRequestDTO,
-  OAuthCreateEmailResponseDTO,
-} from './DTO/auth/auth.dto.js';
-
+import { routes } from './generated-routes.js';
+import { HttpMethod, UserRole } from './defineRoutes.js';
 // --- TYPES ---
-export type UserRole = 'admin' | 'editor' | 'guest';
-export type HttpMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE' | 'PUT';
 
 // --- HELPERS ---
 export function createRequestSchema(schemas: {
@@ -62,50 +55,8 @@ function defineRoute<
   return config;
 }
 
+export const RawRoutes = routes;
 // --- SIMPLIFIED APP ROUTER (Flat structure) ---
-export const routes = {
-  'auth:create:withOauth2': defineRoute({
-    key: 'auth:create:withOauth2',
-    path: '/auth/google',
-    method: 'POST',
-    description: 'Create a new user with OAuth2',
-    auth: ['admin'],
-    schemas: {
-      body: OAuthCreateEmailRequestDTO,
-      responses: {
-        201: OAuthCreateEmailResponseDTO,
-        400: ApiErrorSchema,
-      },
-    },
-  }),
-  'auth:create:withEmail': defineRoute({
-    key: 'auth:create:withEmail',
-    path: '/auth/email',
-    method: 'POST',
-    auth: [],
-    schemas: {
-      body: AuthCreateEmailRequestDTO,
-      responses: {
-        201: AuthCreateEmailResponseDTO,
-        400: ApiErrorSchema,
-      },
-    },
-  }),
-  'auth:create:withPOP': defineRoute({
-    key: 'auth:create:withPOP',
-    path: '/auth/name',
-    method: 'POST',
-    auth: [],
-    schemas: {
-      body: AuthCreateEmailRequestDTO,
-      responses: {
-        201: AuthCreateEmailResponseDTO,
-        400: ApiErrorSchema,
-      },
-    },
-  }),
-} as const;
-
 // --- SIMPLE TYPE EXTRACTION ---
 export type RouteKey = keyof typeof routes;
 
