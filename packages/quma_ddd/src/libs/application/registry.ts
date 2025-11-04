@@ -33,6 +33,7 @@ export class ServiceRegistry {
    * Uses Consul’s native service registry instead of KV.
    */
   async registerService(
+    serviceType: string,
     instanceId: string,
     host: string,
     port: number,
@@ -40,14 +41,15 @@ export class ServiceRegistry {
   ) {
     if (!this.sessionId) await this.createSession(instanceId);
 
-    const serviceName = `microservice-${instanceId}`;
-
     await this.consul.agent.service.register({
-      id: instanceId,
-      name: serviceName,
+      id: `${serviceType}-${instanceId}`, // unique per instance
+      name: serviceType, // all auth services share same 'name'
       address: host,
       port,
+      tags: ['auth', instanceId], // helpful for filtering
       meta: {
+        instanceId,
+        serviceType,
         commands: commands.join(','),
       },
       check: {
@@ -59,7 +61,7 @@ export class ServiceRegistry {
     });
 
     console.log(
-      `[Registry] Registered service '${serviceName}' with ${commands.length} commands`
+      `[Registry] Registered service '${serviceType}' with ${commands.length} commands`
     );
   }
 

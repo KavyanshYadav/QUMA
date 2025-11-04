@@ -1,22 +1,19 @@
 import fs from 'fs';
 import path from 'path';
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { routes } from '../packages/quma_config/dist/index.js';
+import { FrontendRoutes as routes } from '@quma/config';
 
-const frontendRoutes: Record<string, { path: string; method: string }> = {};
-
+const frontendRoutes = {};
+console.log(routes);
 for (const key in routes) {
-  const route = routes[key as keyof typeof routes];
+  const route = routes[key];
   frontendRoutes[key] = {
     path: route.path,
     method: route.method,
   };
 }
 
-const outputPath = path.join(
-  process.cwd(),
-  'packages/qumaconfigShared/src/FrontendRoutes.ts'
-);
+const outputPath = path.join(process.cwd(), './src/FrontendRoutes.ts');
 
 const fileContent = `
 export const FrontendRoutes = ${JSON.stringify(

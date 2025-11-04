@@ -1,0 +1,141 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "auth api",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/auth/google": {
+      "post": {
+        "operationId": "auth:create:withOauth2",
+        "summary": "Create a new user with OAuth2",
+        "security": [{ "admin": [] }],
+        "x-ttl": 30,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OAuthCreateEmailRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthCreateEmailResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/github": {
+      "post": {
+        "operationId": "auth:create:withGithubOauth2",
+        "summary": "Create a new user with GitHub OAuth2",
+        "security": [{ "admin": [] }],
+        "x-ttl": 30,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OAuthCreateEmailRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthCreateEmailResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/email": {
+      "post": {
+        "operationId": "auth:create:withEmail",
+        "summary": "",
+        "security": [
+          {
+            "admin": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthCreateEmailRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthCreateEmailResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "OAuthCreateEmailRequestDTO": {},
+      "OAuthCreateEmailResponseDTO": {},
+      "ApiErrorSchema": {},
+      "AuthCreateEmailRequestDTO": {},
+      "AuthCreateEmailResponseDTO": {}
+    }
+  }
+}

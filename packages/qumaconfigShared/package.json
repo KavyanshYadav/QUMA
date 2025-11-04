@@ -6,26 +6,27 @@
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "nx": {
-  "targets": {
-    "generate-routes": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "pnpm exec node --loader ts-node/esm scripts/generate-frontend-routes.ts"
+    "targets": {
+      "generate-routes": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "pnpm exec node ./scripts/generate-frontend-routes.js",
+          "cwd": "packages/qumaconfigShared"
+        },
+        "outputs": []
       },
-      "outputs": [],   
-      "dependsOn": []
-    },
-    "build": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": [
-          "pnpm tsc --build packages/qumaconfigShared"
+      "build": {
+        "executor": "nx:run-commands",
+        "options": {
+          "commands": [
+            "pnpm tsc --build packages/qumaconfigShared"
+          ]
+        },
+        "dependsOn": [
+          "generate-routes"
         ]
-      },
-      "dependsOn": ["generate-routes"]
-    }
-  },
- 
+      }
+    },
     "exports": {
       "./package.json": "./package.json",
       ".": {
