@@ -33,8 +33,8 @@ export class ServiceRegistry {
    * Uses Consul’s native service registry instead of KV.
    */
   async registerService(
-    serviceType: string,
     instanceId: string,
+    serviceType: string,
     host: string,
     port: number,
     commands: string[]

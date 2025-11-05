@@ -21,7 +21,7 @@ RUN --mount=type=cache,id=pnpm-store,target=/pnpm-store \
 # Install deps using pnpm (fast + deterministic)
 RUN npx nx sync && sleep 3
 # Build your specific Nx app
-RUN npx nx build microService_tickets
+RUN npx nx build microService_event
 
 
 # -------- Stage 2: Runtime --------
@@ -31,7 +31,7 @@ WORKDIR /app
 RUN corepack enable
 
 # Copy built output from builder
-COPY --from=builder /app/packages/microservice_tickets/dist ./
+COPY --from=builder /app/packages/microService_event/dist ./
 
 # Optional: if you want production-only node_modules
 # COPY pnpm-lock.yaml package.json ./

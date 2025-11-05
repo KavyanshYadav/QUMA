@@ -5,6 +5,21 @@
   "nx": {
     "name": "microservice_tickets",
     "targets": {
+      "docker": {
+        "executor": "@nx-tools/nx-container:build",
+        "options": {
+          "dockerFile": "packages/microService_event/Dockerfile",
+          "buildContext": ".",
+          "push": false,
+          "tags": [
+            "microservice_tickets:latest",
+            "microservice_tickets:v1.0.0"
+          ]
+        },
+        "dependsOn": [
+          "^build"
+        ]
+      },
       "build": {
         "executor": "@nx/esbuild:esbuild",
         "outputs": [

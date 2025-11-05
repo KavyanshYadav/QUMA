@@ -2,6 +2,20 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Debug current go file",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${file}"
+    },
+    {
+      "name": "Debug  go app",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${workspaceFolder}"
+    },
+    {
       "type": "node",
       "request": "attach",
       "name": "Attach to Node Backend (WS)",

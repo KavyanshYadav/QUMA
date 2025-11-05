@@ -1,6 +1,6 @@
-go 1.25.1
+go 1.25.3
 
-use(
-    ./packages/go_api_gateway
-    ./packages/quma_go_ddd
+use (
+	./packages/go_api_gateway
+	./packages/quma_go_ddd
 )

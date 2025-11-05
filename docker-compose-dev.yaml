@@ -1,0 +1,50 @@
+version: '3.9'
+
+services:
+  consul:
+    image: hashicorp/consul:1.17
+    container_name: consul
+    ports:
+      - '8500:8500' # Consul UI
+      - '8600:8600/udp' # DNS interface
+    command: agent -dev -client=0.0.0.0
+    networks:
+      - backend
+
+  microservice_tickets:
+    build:
+      context: .
+      dockerfile: ./packages/microservice_tickets/Dockerfile
+    container_name: microservice_auth
+    depends_on:
+      - consul
+    environment:
+      - SERVICE_NAME=auth
+      - SERVICE_PORT=7001
+      - CONSUL_HOST=consul
+      - CONSUL_PORT=8500
+    ports:
+      - '7001:7001'
+    networks:
+      - backend
+
+  microservice_event:
+    build:
+      context: .
+      dockerfile: ./packages/microService_event/Dockerfile
+    container_name: microservice_event
+    depends_on:
+      - consul
+    environment:
+      - SERVICE_NAME=event
+      - SERVICE_PORT=7011
+      - CONSUL_HOST=consul
+      - CONSUL_PORT=8500
+    ports:
+      - '7011:7011'
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge

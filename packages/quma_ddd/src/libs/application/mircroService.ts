@@ -18,9 +18,9 @@ export class MicroService {
     new (...args: any[]) => Command,
     string // command -> module name
   >();
-  constructor(instanceId?: string) {
+  constructor(serviceName: string, instanceId?: string) {
     this.serviceType =
-      process.env.INSTANCE_ID || instanceId || 'notDefinedShouldTermiate';
+      process.env.SERVICE_NAME || serviceName || 'notDefinedShouldTermiate';
     this.instanceId = randomUUID();
     container.registerInstance(ServiceRegistry, this.registry);
     container.registerInstance(MemoryBus, new MemoryBus(this.registry));
@@ -48,7 +48,7 @@ export class MicroService {
     this.requestContextInit();
 
     const commandBus = container.resolve(MemoryBus);
-
+    console.log(this);
     setInterval(() => {
       this.registry.heartbeat();
     }, 7000);
