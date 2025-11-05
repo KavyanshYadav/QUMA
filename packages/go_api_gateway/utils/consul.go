@@ -24,10 +24,7 @@ func NewConsulClient()(*Client,error){
 	return &Client{client: c}, nil
 }
 
-func(c *Client) GetServiceFromConsul(key string)([]*api.ServiceEntry,error){
-	fmt.Println("kdjlasjdkasdklaskldasdjasdjklasjdklasjdkasjkldjaskldjaskldjaskljdasjklas----------------------------")
-	entries, _, err := c.client.Health().Service(key, "", true, nil)
-	fmt.Println(entries)
+func PrintConsulEntries (entries []*api.ServiceEntry){
 	for _, e := range entries {
     host := e.Service.Address
     port := e.Service.Port
@@ -36,7 +33,12 @@ func(c *Client) GetServiceFromConsul(key string)([]*api.ServiceEntry,error){
     url := fmt.Sprintf("http://%s:%d", host, port)
 
     fmt.Printf("- ID: %-36s  Service: %-10s  URL: %s/health\n", id, name, url)
+}	
 }
+
+func(c *Client) GetServiceFromConsul(key string)([]*api.ServiceEntry,error){
+	fmt.Println("kdjlasjdkasdklaskldasdjasdjklasjdklasjdkasjkldjaskldjaskldjaskljdasjklas----------------------------")
+	entries, _, err := c.client.Health().Service(key, "", true, nil)
 
 	if err != nil {
 		return nil, err

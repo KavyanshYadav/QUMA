@@ -4,9 +4,7 @@
     "path": "/auth/google",
     "method": "POST",
     "description": "Create a new user with OAuth2",
-    "auth": [
-      "admin"
-    ],
+    "auth": ["admin"],
     "meta": {
       "ttl": 30,
       "enabled": true
@@ -17,9 +15,7 @@
     "path": "/auth/github",
     "method": "POST",
     "description": "Create a new user with GitHub OAuth2",
-    "auth": [
-      "admin"
-    ],
+    "auth": ["admin"],
     "meta": {
       "ttl": 30,
       "enabled": true
@@ -29,10 +25,47 @@
     "key": "auth:create:withEmail",
     "path": "/auth/email",
     "method": "POST",
-    "auth": [
-      "admin"
-    ],
+    "auth": ["admin"],
     "meta": {
+      "enabled": true
+    }
+  },
+
+  "/event/create": {
+    "key": "event:create:withPayload",
+    "event": "event:create:event",
+    "path": "/event/create",
+    "method": "POST",
+    "description": "Create a new event with provided data payload",
+    "auth": ["admin"],
+    "meta": {
+      "ttl": 60,
+      "enabled": true
+    }
+  },
+
+  "/event/update": {
+    "key": "event:update:details",
+    "event": "event:update:event",
+    "path": "/event/update",
+    "method": "PUT",
+    "description": "Update an existing event’s metadata or schedule",
+    "auth": ["admin"],
+    "meta": {
+      "ttl": 45,
+      "enabled": true
+    }
+  },
+
+  "/event/delete": {
+    "key": "event:delete:byId",
+    "event": "event:delete:event",
+    "path": "/event/delete",
+    "method": "DELETE",
+    "description": "Delete an existing event using its ID",
+    "auth": ["admin"],
+    "meta": {
+      "ttl": 30,
       "enabled": true
     }
   }
