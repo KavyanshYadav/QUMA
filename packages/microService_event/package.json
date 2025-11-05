@@ -32,7 +32,7 @@
           "format": [
             "cjs"
           ],
-          "bundle": false,
+          "bundle": true,
           "main": "packages/microService_event/src/main.ts",
           "tsConfig": "packages/microService_event/tsconfig.app.json",
           "assets": [

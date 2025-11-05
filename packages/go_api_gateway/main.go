@@ -18,7 +18,7 @@ func Hello(name string) string {
 }
 
 func main() {
-	filePath := "../quma_config/dist/openapiflatten.json"
+	filePath := "./openapiflatten.json"
 	encodedRouteString, err := os.ReadFile(filePath)
 	if err != nil {
 		fmt.Printf("failed to read API JSON: %v\n", err)
@@ -35,7 +35,7 @@ func main() {
 	controller.SetUpControllers(r,re)
 
 	cgf,err := utils.NewConsulClient()
-	cgf.GetServiceFromConsul("event")
+	cgf.GetServiceFromConsul("auth")
 	
 	r.Run(":6900")
 	fmt.Println(Hello("go_api_gateway"))

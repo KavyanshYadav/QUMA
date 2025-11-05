@@ -1,0 +1,39 @@
+# .air.toml - live reload for Go API Gateway
+
+root = "."
+tmp_dir = "tmp"
+
+[build]
+# Pre-build hook (optional)
+pre_cmd = ["echo 'Building Gateway...'"]
+
+# Actual build command
+cmd = "go build -o ./tmp/main ."
+
+# The binary file path (used to detect changes)
+bin = "tmp/main"
+
+# Command used to run the built binary
+full_bin = "./tmp/main"
+
+# File types to watch
+include_ext = ["go"]
+exclude_dir = ["tmp", "vendor"]
+
+# Rebuild behavior
+delay = 500     # debounce delay (ms)
+stop_on_error = true
+
+[log]
+time = true     # show timestamps
+main_only = false
+silent = false
+
+[color]
+main = "magenta"
+watcher = "cyan"
+build = "yellow"
+runner = "green"
+
+[misc]
+clean_on_exit = true

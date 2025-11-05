@@ -6,6 +6,16 @@
   "implicitDependencies": ["@quma/config"],
   "tags": [],
   "targets": {
+    "docker": {
+      "executor": "@nx-tools/nx-container:build",
+      "options": {
+        "dockerFile": "packages/go_api_gateway/Dockerfile",
+        "buildContext": ".",
+        "push": false,
+        "tags": ["go_api_gateway:latest", "go_api_gateway:v1.0.0"]
+      },
+      "dependsOn": ["^build"]
+    },
     "build": {
       "executor": "@nx-go/nx-go:build",
       "options": {

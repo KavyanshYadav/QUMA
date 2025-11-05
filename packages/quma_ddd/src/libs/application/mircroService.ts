@@ -79,6 +79,16 @@ export class MicroService {
         console.log('running a service');
       });
 
+    process.on('SIGTERM', async () => {
+      await this.registry.deregister(`${this.serviceType}-${this.instanceId}`);
+      console.log(`Deregistered ${this.serviceType}-${this.instanceId}`);
+      process.exit(0);
+    });
+    process.on('SIGINT', async () => {
+      await this.registry.deregister(`${this.serviceType}-${this.instanceId}`);
+      console.log(`Deregistered ${this.serviceType}-${this.instanceId}`);
+      process.exit(0);
+    });
     this.app.get('/health', (req, res) => {
       res.status(200).json({ status: 'ok', uptime: process.uptime() });
     });

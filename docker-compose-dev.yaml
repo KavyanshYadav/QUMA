@@ -1,6 +1,26 @@
 version: '3.9'
 
 services:
+  gateway:
+    build:
+      context: .
+      dockerfile: ./packages/go_api_gateway/Dockerfile
+    container_name: gateway
+    environment:
+      - CONSUL_HOST=consul
+      - CONSUL_PORT=8500
+      - GATEWAY_PORT=8080
+    ports:
+      - '6900:6900'
+    volumes:
+      - ./packages/go_api_gateway:/app #
+    depends_on:
+      - consul
+      - microservice_tickets
+      - microservice_event
+    networks:
+      - backend
+
   consul:
     image: hashicorp/consul:1.17
     container_name: consul
@@ -15,10 +35,12 @@ services:
     build:
       context: .
       dockerfile: ./packages/microservice_tickets/Dockerfile
-    container_name: microservice_auth
+    container_name: microservice_tickets
+
     depends_on:
       - consul
     environment:
+      - HOST=microservice_tickets
       - SERVICE_NAME=auth
       - SERVICE_PORT=7001
       - CONSUL_HOST=consul
@@ -36,6 +58,7 @@ services:
     depends_on:
       - consul
     environment:
+      - HOST=microservice_event
       - SERVICE_NAME=event
       - SERVICE_PORT=7011
       - CONSUL_HOST=consul

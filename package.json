@@ -2,7 +2,6 @@
   "name": "@quma/source",
   "version": "0.0.0",
   "license": "MIT",
-  "type": "module",
   "scripts": {
     "docs": "typedoc"
   },
@@ -137,7 +136,7 @@
         "executor": "nx:run-commands",
         "options": {
           "command": [
-            "docker compose -f ./docker-compose-dev.yaml up"
+            "docker compose -f ./docker-compose-dev.yaml up --build"
           ]
         }
       },
