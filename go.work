@@ -2,5 +2,6 @@ go 1.25.3
 
 use (
 	./packages/go_api_gateway
+	./packages/quma_gateway_config
 	./packages/quma_go_ddd
 )

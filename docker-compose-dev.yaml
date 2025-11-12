@@ -35,18 +35,17 @@ services:
     build:
       context: .
       dockerfile: ./packages/microservice_tickets/Dockerfile
-    container_name: microservice_tickets
+    # container_name: microservice_tickets
 
     depends_on:
       - consul
     environment:
-      - HOST=microservice_tickets
       - SERVICE_NAME=auth
       - SERVICE_PORT=7001
       - CONSUL_HOST=consul
       - CONSUL_PORT=8500
-    ports:
-      - '7001:7001'
+    expose:
+      - '7001'
     networks:
       - backend
 
@@ -58,7 +57,6 @@ services:
     depends_on:
       - consul
     environment:
-      - HOST=microservice_event
       - SERVICE_NAME=event
       - SERVICE_PORT=7011
       - CONSUL_HOST=consul

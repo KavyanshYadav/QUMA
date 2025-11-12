@@ -19,6 +19,10 @@ func SetUpControllers( r *gin.Engine ,Rstate utils.RouteState) string{
 					return
 				}
 
+				for ent := range entries{
+					fmt.Println(entries[ent].Service.Address)
+				}
+
 				// Pick a random one
 				target := utils.GetRandomEntry(entries)
 				if target == nil {
@@ -28,7 +32,7 @@ func SetUpControllers( r *gin.Engine ,Rstate utils.RouteState) string{
 
 				// Construct full target URL
 				targetURL := fmt.Sprintf("http://%s:%d%s", target.Service.Address, target.Service.Port, c.Request.URL.Path)
-
+				fmt.Println(targetURL)
 				// Forward the request
 				utils.ForwardRequest(c, targetURL)
 	

@@ -6,12 +6,13 @@ import { MemoryBus } from '../utils/index.js';
 import { Module } from './module.js';
 import { randomUUID } from 'crypto';
 import { RequestContext } from './context/AppRequestContex.js';
+import os from 'os';
 export class MicroService {
   private app = express();
   private registry = new ServiceRegistry();
   private instanceId: string;
   private modules: Module[] = [];
-  private host = process.env.HOST || 'localhost';
+  private host = process.env.HOST || this.getContainerIp();
   private port = Number(process.env.PORT) || 3000;
   private serviceType: string;
   private readonly commands = new Map<
@@ -42,6 +43,20 @@ export class MicroService {
         { requestId }
       );
     });
+  }
+
+  getContainerIp(): string {
+    const interfaces = os.networkInterfaces();
+
+    for (const name of Object.keys(interfaces)) {
+      for (const iface of interfaces[name] || []) {
+        if (iface.family === 'IPv4' && !iface.internal) {
+          return iface.address; // e.g. "172.20.0.3"
+        }
+      }
+    }
+
+    return '127.0.0.1';
   }
 
   async run(port: number | undefined = Number(process.env.PORT)) {
