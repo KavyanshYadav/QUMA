@@ -1,20 +1,30 @@
-// src/theme/types.ts
+export type ThemeMode = 'light' | 'dark';
 
 export interface ThemeColors {
-  primary: string;
-  secondary: string;
-  accent: string;
   background: string;
-  surface: string;
-  text: string;
+  foreground: string;
   muted: string;
+  mutedForeground: string;
+  border: string;
+  input: string;
+  ring: string;
+  primary: string;
+  primaryForeground: string;
+  secondary: string;
+  secondaryForeground: string;
+  accent: string;
+  accentForeground: string;
+  destructive: string;
+  destructiveForeground: string;
   success: string;
+  successForeground: string;
   warning: string;
-  danger: string;
+  warningForeground: string;
 }
 
 export interface ThemeTypography {
   fontFamily: string;
+  fontFamilyMono: string;
   fontSize: {
     xs: string;
     sm: string;
@@ -23,11 +33,18 @@ export interface ThemeTypography {
     xl: string;
     '2xl': string;
     '3xl': string;
+    '4xl': string;
   };
   fontWeight: {
     normal: number;
     medium: number;
+    semibold: number;
     bold: number;
+  };
+  letterSpacing: {
+    tight: string;
+    normal: string;
+    wide: string;
   };
   lineHeight: {
     tight: string;
@@ -37,13 +54,14 @@ export interface ThemeTypography {
 }
 
 export interface ThemeLayout {
-  borderRadius: {
+  radius: {
     sm: string;
     md: string;
     lg: string;
+    xl: string;
     full: string;
   };
-  spacing?: (factor: number) => string;
+  spacing: (factor: number) => string;
   containerWidth?: {
     sm: string;
     md: string;
@@ -73,7 +91,8 @@ export interface ThemeBreakpoints {
 }
 
 export interface Theme {
-  mode: 'light' | 'dark';
+  name: string;
+  mode: ThemeMode;
   colors: ThemeColors;
   typography: ThemeTypography;
   layout: ThemeLayout;

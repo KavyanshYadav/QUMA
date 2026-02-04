@@ -4,46 +4,74 @@ import React, {
   useMemo,
   ReactNode,
   useContext,
+  useState,
 } from 'react';
-import { Theme } from '../../types';
-import { defaultTheme } from './themes/deafaultTheme.js';
-import { darkTheme } from './themes/darkTheme.js';
+import { Theme, ThemeMode } from '../../types/index.js';
+import {
+  createThemeManager,
+  ThemeManager,
+  ThemeManagerOptions,
+} from './themeManager.js';
 
 interface ThemeContextType {
   theme: Theme;
+  mode: ThemeMode;
   toggleTheme: () => void;
-  setTheme: (theme: Theme) => void;
+  setMode: (mode: ThemeMode) => void;
+  setTheme: (mode: ThemeMode, theme: Theme) => void;
+  manager: ThemeManager;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const fallbackManager = createThemeManager({ enableSystem: false, cdnUrl: false });
+const fallbackContext: ThemeContextType = {
+  theme: fallbackManager.getTheme(),
+  mode: fallbackManager.getMode(),
+  toggleTheme: () => undefined,
+  setMode: () => undefined,
+  setTheme: () => undefined,
+  manager: fallbackManager,
+};
 
-interface ThemeProviderProps {
+const ThemeContext = createContext<ThemeContextType>(fallbackContext);
+
+interface ThemeProviderProps extends ThemeManagerOptions {
   children: ReactNode;
+  manager?: ThemeManager;
 }
 
-export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const [theme, setTheme] = React.useState<Theme>(() => {
-    if (typeof window === 'undefined') return defaultTheme;
-    const storage = localStorage.getItem('theme-mode');
-    return storage === 'dark' ? darkTheme : defaultTheme;
-  });
+export const ThemeProvider = ({ children, manager, ...options }: ThemeProviderProps) => {
+  const [themeManager] = useState(() => manager ?? createThemeManager(options));
+  const [theme, setThemeState] = useState<Theme>(themeManager.getTheme());
+  const [mode, setModeState] = useState<ThemeMode>(themeManager.getMode());
 
   useEffect(() => {
-    const root = document.documentElement;
-    for (const [key, value] of Object.entries(theme.colors)) {
-      root.style.setProperty(`--color-${key}`, value);
-    }
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme((prev) => {
-      const newTheme = prev.mode === 'dark' ? defaultTheme : darkTheme;
-      localStorage.setItem('theme-mode', newTheme.mode);
-      return newTheme;
+    themeManager.init();
+    const unsubscribe = themeManager.onChange((nextTheme) => {
+      setThemeState(nextTheme);
+      setModeState(nextTheme.mode);
     });
-  };
 
-  const value = useMemo(() => ({ theme, toggleTheme, setTheme }), [theme]);
+    setThemeState(themeManager.getTheme());
+    setModeState(themeManager.getMode());
+
+    return () => {
+      unsubscribe();
+      themeManager.destroy();
+    };
+  }, [themeManager]);
+
+  const value = useMemo(
+    () => ({
+      theme,
+      mode,
+      toggleTheme: () => themeManager.toggleMode(),
+      setMode: (nextMode: ThemeMode) => themeManager.setMode(nextMode),
+      setTheme: (nextMode: ThemeMode, nextTheme: Theme) =>
+        themeManager.setTheme(nextMode, nextTheme),
+      manager: themeManager,
+    }),
+    [theme, mode, themeManager]
+  );
 
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
