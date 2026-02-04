@@ -1,48 +1,75 @@
 import React from 'react';
 import LoginWidget from '../widgets/LoginWidget.js';
 import { css } from '@emotion/react';
+import { useTheme } from '@quma/webkit';
 
 function LoginScreen() {
+  const { theme } = useTheme();
+
   return (
     <div
       css={css`
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        justify-items: center;
-        align-items: center;
-        flex-direction: column;
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        background: radial-gradient(
+            circle at top,
+            rgba(227, 25, 55, 0.18),
+            transparent 55%
+          ),
+          ${theme.colors.background};
+        color: ${theme.colors.foreground};
       `}
     >
       <header
         css={css`
-          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 1.5rem 3rem 0;
         `}
       >
-        <h1
+        <div
           css={css`
-            padding: 1rem;
+            font-size: 1rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: ${theme.colors.mutedForeground};
           `}
         >
-          LOGO
-        </h1>
+          Quma
+        </div>
+        <span
+          css={css`
+            font-size: 0.9rem;
+            color: ${theme.colors.mutedForeground};
+          `}
+        >
+          Secure access
+        </span>
       </header>
-      <div
+
+      <main
         css={css`
-          margin: auto;
-          width: 100%;
+          display: grid;
+          align-items: center;
+          padding: 2rem 1.5rem;
         `}
       >
         <LoginWidget />
-      </div>
+      </main>
+
       <footer
         css={css`
-          padding: 1rem;
-
-          width: 100%;
+          padding: 1rem 3rem 2rem;
+          display: flex;
+          justify-content: space-between;
+          font-size: 0.85rem;
+          color: ${theme.colors.mutedForeground};
         `}
       >
-        <h4>English</h4>
+        <span>© 2024 Quma</span>
+        <span>English · Privacy · Terms</span>
       </footer>
     </div>
   );
