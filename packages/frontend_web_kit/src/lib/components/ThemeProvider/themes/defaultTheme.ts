@@ -1,0 +1,91 @@
+import { Theme } from '../../../types/index.js';
+
+export const defaultTheme: Theme = {
+  name: 'Tesla Minimal Light',
+  mode: 'light',
+  colors: {
+    background: '#F7F7F8',
+    foreground: '#0B0B0C',
+    muted: '#ECEDEF',
+    mutedForeground: '#5C5E62',
+    border: '#D9DBDE',
+    input: '#FFFFFF',
+    ring: '#111113',
+    primary: '#111113',
+    primaryForeground: '#FFFFFF',
+    secondary: '#FFFFFF',
+    secondaryForeground: '#111113',
+    accent: '#E31937',
+    accentForeground: '#FFFFFF',
+    destructive: '#C1121F',
+    destructiveForeground: '#FFFFFF',
+    success: '#1F9D55',
+    successForeground: '#FFFFFF',
+    warning: '#F4B740',
+    warningForeground: '#1C1917',
+  },
+  layout: {
+    radius: {
+      sm: '6px',
+      md: '12px',
+      lg: '20px',
+      xl: '28px',
+      full: '9999px',
+    },
+    spacing: (factor) => `${factor * 8}px`,
+    containerWidth: {
+      sm: '560px',
+      md: '840px',
+      lg: '1120px',
+      xl: '1320px',
+    },
+  },
+  typography: {
+    fontFamily: "'Inter', 'Helvetica Neue', Arial, sans-serif",
+    fontFamilyMono: "'JetBrains Mono', 'SFMono-Regular', monospace",
+    fontSize: {
+      xs: '0.75rem',
+      sm: '0.875rem',
+      base: '1rem',
+      lg: '1.125rem',
+      xl: '1.375rem',
+      '2xl': '1.75rem',
+      '3xl': '2.25rem',
+      '4xl': '2.75rem',
+    },
+    fontWeight: {
+      normal: 400,
+      medium: 500,
+      semibold: 600,
+      bold: 700,
+    },
+    letterSpacing: {
+      tight: '-0.02em',
+      normal: '0em',
+      wide: '0.04em',
+    },
+    lineHeight: {
+      tight: '1.1',
+      normal: '1.5',
+      relaxed: '1.75',
+    },
+  },
+  effects: {
+    shadows: {
+      sm: '0 1px 2px rgba(15, 23, 42, 0.08)',
+      md: '0 10px 20px rgba(15, 23, 42, 0.12)',
+      lg: '0 24px 48px rgba(15, 23, 42, 0.18)',
+    },
+    transitions: {
+      fast: '150ms ease',
+      normal: '240ms ease',
+      slow: '400ms ease',
+    },
+  },
+  breakpoints: {
+    sm: '600px',
+    md: '960px',
+    lg: '1280px',
+    xl: '1920px',
+  },
+};
