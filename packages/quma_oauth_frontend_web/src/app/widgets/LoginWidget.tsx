@@ -1,6 +1,13 @@
-import { css } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 import { Button, Input, useTheme } from '@quma/webkit';
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { ApiClient } from './utilis';
+
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -11,7 +18,10 @@ type FieldErrors = Partial<
 >;
 
 const useAuthForm = () => {
-  const [view, setView] = React.useState<ViewState>('login');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const view = (searchParams.get('mode') as ViewState) || 'login';
+  const api = new ApiClient('');
+
   const [values, setValues] = React.useState({
     name: '',
     email: '',
@@ -25,12 +35,15 @@ const useAuthForm = () => {
 
   const update = (key: keyof typeof values, value: string | boolean) => {
     setValues((prev) => ({ ...prev, [key]: value }));
+    if (errors[key as keyof FieldErrors]) {
+      setErrors((prev) => ({ ...prev, [key]: undefined }));
+    }
   };
 
   const switchView = (next: ViewState) => {
     setErrors({});
     setStatus('');
-    setView(next);
+    setSearchParams({ mode: next });
   };
 
   const validate = (current: ViewState) => {
@@ -78,8 +91,28 @@ const useAuthForm = () => {
     if (!validate(current)) return;
 
     if (current === 'signup') {
+      // Example API call for signup
+      setStatus('Signing up...');
+      // api.call('auth:signup', { body: { ... } });
       setStatus('We sent a verification code to your email.');
       switchView('verify');
+      return;
+    }
+
+    if (current === 'login') {
+      // Restore original API call logic
+      api
+        .call('auth:create:withEmail', {
+          body: {
+            email: values.email,
+          },
+        })
+        .then(() => {
+          setStatus('Login successful. Redirecting...');
+        })
+        .catch(() => {
+          setStatus('Login failed. Please try again.');
+        });
       return;
     }
 
@@ -94,8 +127,6 @@ const useAuthForm = () => {
       switchView('login');
       return;
     }
-
-    setStatus('Login successful. Redirecting...');
   };
 
   return {
@@ -109,15 +140,7 @@ const useAuthForm = () => {
   };
 };
 
-const Field = ({
-  id,
-  label,
-  type = 'text',
-  value,
-  onChange,
-  error,
-  helper,
-}: {
+const Field: React.FC<{
   id: string;
   label: string;
   type?: string;
@@ -125,7 +148,7 @@ const Field = ({
   onChange: (value: string) => void;
   error?: string;
   helper?: string;
-}) => {
+}> = ({ id, label, type = 'text', value, onChange, error, helper }) => {
   const { theme } = useTheme();
 
   return (
@@ -134,7 +157,9 @@ const Field = ({
       label={label}
       type={type}
       value={value}
-      onChange={(event) => onChange(event.target.value)}
+      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+        onChange(event.target.value)
+      }
       helperText={error ?? helper}
       sx={css`
         input {
@@ -147,7 +172,7 @@ const Field = ({
   );
 };
 
-function LoginWidget() {
+const LoginWidget: React.FC = () => {
   const { theme } = useTheme();
   const { view, values, errors, status, update, switchView, handleSubmit } =
     useAuthForm();
@@ -171,35 +196,25 @@ function LoginWidget() {
       css={css`
         width: min(480px, 100%);
         margin: 0 auto;
-        padding: 2.5rem;
+        padding: 3rem;
         display: grid;
         gap: 2rem;
-        background: ${theme.colors.secondary};
-        border: 1px solid ${theme.colors.border};
-        border-radius: ${theme.layout.radius.xl};
-        box-shadow: ${theme.effects.shadows.lg};
+        animation: ${fadeIn} 0.4s ease-out;
       `}
     >
       <div
         css={css`
           display: grid;
           gap: 0.75rem;
+          text-align: center;
         `}
       >
-        <span
-          css={css`
-            font-size: 0.75rem;
-            letter-spacing: 0.35em;
-            text-transform: uppercase;
-            color: ${theme.colors.mutedForeground};
-          `}
-        >
-          Quma Auth
-        </span>
         <h1
           css={css`
             margin: 0;
-            font-size: clamp(1.8rem, 2vw, 2.4rem);
+            font-size: 2rem;
+            font-weight: 700;
+            color: ${theme.colors.foreground};
           `}
         >
           {titleMap[view]}
@@ -214,45 +229,8 @@ function LoginWidget() {
         </p>
       </div>
 
-      <div
-        css={css`
-          display: flex;
-          gap: 0.75rem;
-          flex-wrap: wrap;
-        `}
-      >
-        <Button
-          variant={view === 'login' ? 'primary' : 'ghost'}
-          size="sm"
-          onClick={() => switchView('login')}
-        >
-          Login
-        </Button>
-        <Button
-          variant={view === 'signup' ? 'primary' : 'ghost'}
-          size="sm"
-          onClick={() => switchView('signup')}
-        >
-          Sign up
-        </Button>
-        <Button
-          variant={view === 'forgot' ? 'primary' : 'ghost'}
-          size="sm"
-          onClick={() => switchView('forgot')}
-        >
-          Forgot
-        </Button>
-        <Button
-          variant={view === 'verify' ? 'primary' : 'ghost'}
-          size="sm"
-          onClick={() => switchView('verify')}
-        >
-          Verify
-        </Button>
-      </div>
-
       <form
-        onSubmit={(event) => {
+        onSubmit={(event: React.FormEvent) => {
           event.preventDefault();
           handleSubmit(view);
         }}
@@ -266,7 +244,7 @@ function LoginWidget() {
             id="name"
             label="Full name"
             value={values.name}
-            onChange={(value) => update('name', value)}
+            onChange={(value: string) => update('name', value)}
             error={errors.name}
             helper="Use the name on your legal documents."
           />
@@ -278,7 +256,7 @@ function LoginWidget() {
             label="Email"
             type="email"
             value={values.email}
-            onChange={(value) => update('email', value)}
+            onChange={(value: string) => update('email', value)}
             error={errors.email}
             helper="Use the email tied to your workspace."
           />
@@ -290,7 +268,7 @@ function LoginWidget() {
             label="Password"
             type="password"
             value={values.password}
-            onChange={(value) => update('password', value)}
+            onChange={(value: string) => update('password', value)}
             error={errors.password}
             helper="Minimum 8 characters."
           />
@@ -302,7 +280,7 @@ function LoginWidget() {
             label="Confirm password"
             type="password"
             value={values.confirm}
-            onChange={(value) => update('confirm', value)}
+            onChange={(value: string) => update('confirm', value)}
             error={errors.confirm}
           />
         )}
@@ -313,29 +291,60 @@ function LoginWidget() {
             label="Verification code"
             type="text"
             value={values.code}
-            onChange={(value) => update('code', value)}
+            onChange={(value: string) => update('code', value)}
             error={errors.code}
             helper="Check your email for a 6-digit code."
           />
         )}
 
         {view === 'login' && (
-          <label
+          <div
             css={css`
               display: flex;
               align-items: center;
-              gap: 0.5rem;
+              justify-content: space-between;
               font-size: 0.875rem;
-              color: ${theme.colors.mutedForeground};
             `}
           >
-            <input
-              type="checkbox"
-              checked={values.remember}
-              onChange={(event) => update('remember', event.target.checked)}
-            />
-            Remember this device
-          </label>
+            <label
+              css={css`
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                color: ${theme.colors.mutedForeground};
+                cursor: pointer;
+              `}
+            >
+              <input
+                type="checkbox"
+                checked={values.remember}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  update('remember', event.target.checked)
+                }
+                css={css`
+                  accent-color: ${theme.colors.primary};
+                `}
+              />
+              Remember me
+            </label>
+            <button
+              type="button"
+              onClick={() => switchView('forgot')}
+              css={css`
+                border: none;
+                background: none;
+                padding: 0;
+                color: ${theme.colors.primary};
+                cursor: pointer;
+                font-weight: 500;
+                &:hover {
+                  text-decoration: underline;
+                }
+              `}
+            >
+              Forgot password?
+            </button>
+          </div>
         )}
 
         {status && (
@@ -347,47 +356,31 @@ function LoginWidget() {
               background: ${theme.colors.muted};
               color: ${theme.colors.mutedForeground};
               font-size: 0.9rem;
+              text-align: center;
             `}
           >
             {status}
           </div>
         )}
 
-        <Button type="submit" variant="primary" fullWidth>
-          {view === 'login' && 'Continue'}
+        <Button type="submit" variant="primary" fullWidth size="lg">
+          {view === 'login' && 'Sign in'}
           {view === 'signup' && 'Create account'}
-          {view === 'forgot' && 'Send reset'}
+          {view === 'forgot' && 'Send reset instructions'}
           {view === 'verify' && 'Verify email'}
         </Button>
       </form>
 
       <div
         css={css`
-          display: grid;
-          gap: 0.5rem;
-          font-size: 0.85rem;
+          text-align: center;
+          font-size: 0.9rem;
           color: ${theme.colors.mutedForeground};
         `}
       >
-        {view === 'login' && (
-          <button
-            type="button"
-            onClick={() => switchView('forgot')}
-            css={css`
-              border: none;
-              background: none;
-              padding: 0;
-              color: ${theme.colors.accent};
-              text-align: left;
-              cursor: pointer;
-            `}
-          >
-            Forgot password?
-          </button>
-        )}
-        {view === 'login' && (
-          <span>
-            New here?{' '}
+        {view === 'login' ? (
+          <>
+            Don't have an account?{' '}
             <button
               type="button"
               onClick={() => switchView('signup')}
@@ -395,33 +388,42 @@ function LoginWidget() {
                 border: none;
                 background: none;
                 padding: 0;
-                color: ${theme.colors.accent};
+                color: ${theme.colors.primary};
                 cursor: pointer;
+                font-weight: 600;
+                &:hover {
+                  text-decoration: underline;
+                }
               `}
             >
-              Create an account
+              Sign up
             </button>
-          </span>
-        )}
-        {view !== 'login' && (
-          <button
-            type="button"
-            onClick={() => switchView('login')}
-            css={css`
-              border: none;
-              background: none;
-              padding: 0;
-              color: ${theme.colors.accent};
-              text-align: left;
-              cursor: pointer;
-            `}
-          >
-            Back to login
-          </button>
+          </>
+        ) : (
+          <>
+            Already have an account?{' '}
+            <button
+              type="button"
+              onClick={() => switchView('login')}
+              css={css`
+                border: none;
+                background: none;
+                padding: 0;
+                color: ${theme.colors.primary};
+                cursor: pointer;
+                font-weight: 600;
+                &:hover {
+                  text-decoration: underline;
+                }
+              `}
+            >
+              Log in
+            </button>
+          </>
         )}
       </div>
     </div>
   );
-}
+};
 
 export default LoginWidget;
